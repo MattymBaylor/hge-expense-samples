@@ -159,6 +159,7 @@ tfoot td{padding:10px 8px}
     <table>
       <thead>
         <tr>
+          <th>Date</th>
           <th>Vendor</th>
           <th class="r">Total charged</th>
           <th class="r">Jan 1–22</th>
@@ -169,12 +170,14 @@ tfoot td{padding:10px 8px}
           <th class="r">Biz amount</th>
           <th>Category</th>
           <th>Business justification</th>
+          <th>Account / Email</th>
           <th>Statements</th>
         </tr>
       </thead>
       <tbody id="tbl"></tbody>
       <tfoot>
         <tr style="font-weight:600;border-top:2px solid var(--bd)">
+          <td></td>
           <td>Totals</td>
           <td class="r">$17,833.66</td>
           <td class="r">$1,982.58</td>
@@ -183,6 +186,7 @@ tfoot td{padding:10px 8px}
           <td class="r">$6,440.85</td>
           <td class="r">~84%</td>
           <td class="r green">$14,980.22</td>
+          <td></td>
           <td></td>
           <td></td>
           <td></td>
@@ -334,6 +338,21 @@ function filterTable(cat){
   buildTable();
 }
 
+// Map first charge month to statement date
+const monthDate={Jan:'1/22/2026',Feb:'2/22/2026',Mar:'3/23/2026',Apr:'4/23/2026'};
+function getDate(r){
+  const m=r.months.split(',');
+  // use first month that has a charge > 0
+  for(const mo of ['Jan','Feb','Mar','Apr']){
+    if(m.includes(mo)&&r[mo]>0) return monthDate[mo];
+  }
+  return m[0]?monthDate[m[0]]:'—';
+}
+function getEmail(j){
+  const match=j.match(/Account:\s*([^\s.]+@[^\s.]+\.[^\s.(—]+)/);
+  return match?match[1]:'HGE account';
+}
+
 function buildTable(){
   const tbl=document.getElementById('tbl');
   tbl.innerHTML='';
@@ -343,7 +362,10 @@ function buildTable(){
     tr.setAttribute('data-cat',r.c);
     const pct=r.bp===1?'100%':r.bp===0?'0%':Math.round(r.bp*100)+'%';
     const fmt=n=>n>0?'$'+n.toLocaleString('en-US',{minimumFractionDigits:2}):'—';
+    const dateStr=getDate(r);
+    const email=getEmail(r.j);
     tr.innerHTML=`
+      <td style="padding:8px;font-size:11px;color:var(--tx3);white-space:nowrap">${dateStr}</td>
       <td style="padding:8px;font-weight:500">${r.v}</td>
       <td class="r" style="padding:8px">${r.a.toLocaleString('en-US',{minimumFractionDigits:2})}</td>
       <td class="r" style="padding:8px;color:var(--tx3)">${fmt(r.Jan)}</td>
@@ -354,6 +376,7 @@ function buildTable(){
       <td class="r" style="padding:8px"><span class="green">${r.ba.toLocaleString('en-US',{minimumFractionDigits:2})}</span></td>
       <td style="padding:8px"><span class="badge ${badgeClass[r.c]}">${r.c}</span></td>
       <td style="padding:8px;font-size:12px;color:var(--tx2);max-width:240px">${r.j}</td>
+      <td style="padding:8px;font-size:11px;color:var(--tx3);white-space:nowrap">${email}</td>
       <td style="padding:8px;font-size:11px;color:var(--tx3)" class="month-chips">${r.months}</td>`;
     tbl.appendChild(tr);
   });
