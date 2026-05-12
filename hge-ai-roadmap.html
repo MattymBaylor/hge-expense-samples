@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HGE AI Agent Roadmap</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;500;600;700&display=swap');
+    :root{--navy:#03123d;--blue:#204ce5;--sky:#44b2e5;--green:#20fc8f;--gold:#f5a623;--white:#fff}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Montserrat',sans-serif;background:var(--navy);color:var(--white);min-height:100vh;padding:40px 24px 80px}
+    header{text-align:center;margin-bottom:48px}
+    header h1{font-family:'Bebas Neue',cursive;font-size:clamp(2rem,6vw,3.5rem);letter-spacing:.06em;color:var(--white);line-height:1}
+    header h1 span{color:var(--green)}
+    header p{font-size:.9rem;color:#8090b0;margin-top:10px;font-weight:500}
+    .conductor-wrap{display:flex;justify-content:center;margin-bottom:0;position:relative;z-index:2}
+    .conductor{background:linear-gradient(135deg,var(--blue),var(--sky));border-radius:20px;padding:20px 36px;text-align:center;box-shadow:0 0 60px rgba(32,76,229,.5),0 0 120px rgba(32,76,229,.2);min-width:260px}
+    .conductor .c-label{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.16em;color:rgba(255,255,255,.7);margin-bottom:4px}
+    .conductor .c-title{font-family:'Bebas Neue',cursive;font-size:1.8rem;letter-spacing:.06em;color:var(--white)}
+    .conductor .c-sub{font-size:.72rem;color:rgba(255,255,255,.75);margin-top:4px;font-weight:500}
+    .connector-down{display:flex;justify-content:center;height:40px;position:relative;z-index:1}
+    .connector-down::after{content:'';display:block;width:2px;height:100%;background:linear-gradient(to bottom,var(--sky),rgba(68,178,229,.3))}
+    .departments{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;max-width:1200px;margin:0 auto;position:relative}
+    .departments::before{content:'';position:absolute;top:-1px;left:10%;right:10%;height:2px;background:linear-gradient(to right,transparent,var(--sky),transparent)}
+    .dept-card{background:rgba(255,255,255,.04);border:1px solid rgba(68,178,229,.2);border-radius:16px;overflow:hidden;position:relative;transition:border-color .2s,box-shadow .2s}
+    .dept-card:hover{border-color:rgba(68,178,229,.5);box-shadow:0 0 30px rgba(68,178,229,.12)}
+    .dept-card::before{content:'';position:absolute;top:-20px;left:50%;width:2px;height:20px;background:rgba(68,178,229,.4)}
+    .dept-header{padding:14px 18px;display:flex;align-items:center;gap:10px}
+    .dept-icon{font-size:1.3rem;line-height:1;flex-shrink:0}
+    .dept-name{font-family:'Bebas Neue',cursive;font-size:1.2rem;letter-spacing:.06em;color:var(--white)}
+    .dept-body{padding:0 18px 16px}
+    .agent-item{display:flex;align-items:flex-start;gap:8px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.05)}
+    .agent-item:last-child{border-bottom:none}
+    .agent-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:6px}
+    .agent-text{font-size:.8rem;font-weight:500;color:rgba(255,255,255,.8);line-height:1.4}
+    .agent-kpi{font-size:.68rem;color:#6070a0;margin-top:2px;line-height:1.3}
+    .agent-badge{display:inline-block;font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;padding:2px 7px;border-radius:10px;margin-top:4px}
+    .badge-priority{background:rgba(32,252,143,.15);color:var(--green);border:1px solid rgba(32,252,143,.3)}
+    .badge-soon{background:rgba(245,166,35,.15);color:var(--gold);border:1px solid rgba(245,166,35,.3)}
+    .dept-inside-sales .dept-header{background:rgba(32,252,143,.08);border-bottom:1px solid rgba(32,252,143,.15)}
+    .dept-inside-sales .dept-name{color:var(--green)}
+    .dept-inside-sales .agent-dot{background:var(--green)}
+    .dept-marketing .dept-header{background:rgba(68,178,229,.08);border-bottom:1px solid rgba(68,178,229,.15)}
+    .dept-marketing .dept-name{color:var(--sky)}
+    .dept-marketing .agent-dot{background:var(--sky)}
+    .dept-it .dept-header{background:rgba(32,76,229,.1);border-bottom:1px solid rgba(32,76,229,.2)}
+    .dept-it .dept-name{color:#7090ff}
+    .dept-it .agent-dot{background:#7090ff}
+    .dept-recruiting .dept-header{background:rgba(245,166,35,.08);border-bottom:1px solid rgba(245,166,35,.15)}
+    .dept-recruiting .dept-name{color:var(--gold)}
+    .dept-recruiting .agent-dot{background:var(--gold)}
+    .dept-hr .dept-header{background:rgba(255,100,150,.08);border-bottom:1px solid rgba(255,100,150,.15)}
+    .dept-hr .dept-name{color:#ff8ab0}
+    .dept-hr .agent-dot{background:#ff8ab0}
+    .dept-cross .dept-header{background:rgba(180,100,255,.08);border-bottom:1px solid rgba(180,100,255,.15)}
+    .dept-cross .dept-name{color:#c080ff}
+    .dept-cross .agent-dot{background:#c080ff}
+    .footer-note{text-align:center;margin-top:48px;font-size:.75rem;color:#4a5a7a;font-weight:500}
+    .legend{display:flex;justify-content:center;gap:24px;margin-bottom:32px;flex-wrap:wrap}
+    .legend-item{display:flex;align-items:center;gap:6px;font-size:.72rem;color:#8090b0;font-weight:600}
+    .legend-dot{width:8px;height:8px;border-radius:50%}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>AI Agent <span>Roadmap</span></h1>
+    <p>One conductor. Six departments. 35+ agents. All connected.</p>
+  </header>
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div> Priority Build</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--gold)"></div> Near-Term</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#6070a0"></div> Roadmap</div>
+  </div>
+  <div class="conductor-wrap">
+    <div class="conductor">
+      <div class="c-label">Central Intelligence Layer</div>
+      <div class="c-title">Orchestration Agent</div>
+      <div class="c-sub">Workflow coordination - Data governance - Cross-department routing</div>
+    </div>
+  </div>
+  <div class="connector-down"></div>
+  <div class="departments">
+    <div class="dept-card dept-inside-sales">
+      <div class="dept-header"><div class="dept-icon">📞</div><div class="dept-name">Inside Sales</div></div>
+      <div class="dept-body">
+        <div class="agent-item"><div class="agent-dot"></div><div><div class="agent-text">Confirmation Agent — Voice, Chat & Avatar</div><div class="agent-kpi">Reduce cancellations & missed appointments</div><span class="agent-badge badge-priority">Priority</span></div></div>
+        <div class="agent-item"><div class="agent-dot"></div><div><div class="agent-text">Aged Leads Re-engagement</div><div class="agent-kpi">Rework 30/60/90 day leads</div><span class="agent-badge badge-priority">Priority</span></div></div>
+        <div class="agent-item"><div class="agent-dot"></div><div><div class="agent-text">Outbound Sequence Agent</div><div class="agent-kpi">Personalized multi-touch outreach</div><span class="agent-badge badge-soon">Soon</span></div></div>
+        <div class="agent-item"><div class="agent-dot"></div><div><div class="agent-text">Intent & Signal Scoring Agent</div><div class="agent-kpi">Rank leads by buying readiness</div></div></div>
+        <div class="agent-item"><div class="agent-dot"></div><div><div class="agent-text">Meeting Co-Pilot Agent</div><div class="agent-kpi">Live guidance + follow-up</div></div></div>
+        <div class="agent-item"><div class="agent-dot"></div><div><div class="agent-text">Sentiment & QA Analytics</div><div class="agent-kpi">Score calls/transcripts</div></div></div>
+        <div class="agent-item"><div class="agent-dot"></div><div><div class="agent-text">Multilingual Translation Agent</div><div class="agent-kpi">Real-time language support</div></div></div>
+      </div>
+    </div>
+    <div class="dept-card dept-marketing">
+      <div class="dept-header"><div class="dept-icon">📣</div><div class="dept-name">Marketing</div></div>
+      <div class="dept-body">
+        <div class="agent-item"><div class="agent-dot"></div><div><div class="agent-text">Campaign Planner Agent</div><div class="agent-kpi">Goals to channel mix, briefs, calendars</div><span class="agent-badge badge-soon">Soon</span></div></div>
+        <div class="agent-item"><div class="agent-dot"></div><div><div class="agent-text">Content Studio Agent</div><div class="agent-kpi">On-brand ads, emails, LP copy</div></div></div>
+        <div class="agent-item"><div class="agent-dot"></div><div><div class="agent-text">Optimization & Budget Shifting</div><div class="agent-kpi">Reallocate spend in real time</div></div></div>
+        <div class="agent-item"><div class="agent-dot"></div><div><div class="agent-text">Journey Personalization Agent</div><div class="agent-kpi">1:1 cross-channel journeys</div></div></div>
+        <div class="agent-item"><div class="agent-dot"></div><div><div class="agent-text">Social Listening & Brand Protection</div><div class="agent-kpi">Monitor mentions/sentiment</div></div></div>
+      </div>
+    </div>
+    <div class="dept-card dept-it">
+      <div class="dept-header"><div class="dept-icon">⚙️</div><div class="dept-name">IT</div></div>
+      <div class="dept-body">
+        <div class="agent-item"><div class="agent-dot"></div><div><div class="agent-text">CRM Hygiene & Forecasting</div><div class="agent-kpi">Clean enriched data</div><span class="agent-badge badge-priority">Priority</span></div></div>
+        <div class="agent-item"><div class="agent-dot"></div><div><div class="agent-text">Data Enrichment Agent</div><div class="agent-kpi">2-3 API streams</div><span class="agent-badge badge-priority">Priority</span></div></div>
+        <div class="agent-item"><div class="agent-dot"></div><div><div class="agent-text">24/7 Backend Monitoring</div><div class="agent-kpi">Slack alerts, zero downtime</div><span class="agent-badge badge-soon">Soon</span></div></div>
+        <div class="agent-item"><div class="agent-dot"></div><div><div class="agent-text">IT Helpdesk & Ticket Triage</div><div class="agent-kpi">L1 auto-resolve</div></div></div>
+        <div class="agent-item"><div class="agent-dot"></div><div><div class="agent-text">Security Monitoring Agent</div><div class="agent-kpi">Anomaly detection</div></div></div>
+        <div class="agent-item"><div class="agent-dot"></div><div><div class="agent-text">Knowledge & Documentation Agent</div><div class="agent-kpi">Auto-generate/update docs</div></div></div>
+      </div>
+    </div>
+    <div class="dept-card dept-recruiting">
+      <div class="dept-header"><div class="dept-icon">🎯</div><div class="dept-name">Recruiting</div></div>
+      <div class="dept-body">
+        <div class="agent-item"><div class="agent-dot"></div><div><div class="agent-text">Automated Job Posting & Screening</div><div class="agent-kpi">Time-to-fill reduction</div><span class="agent-badge badge-soon">Soon</span></div></div>
+        <div class="agent-item"><div class="agent-dot"></div><div><div class="agent-text">Interview Scheduling Agent</div><div class="agent-kpi">No-show rate reduction</div></div></div>
+        <div class="agent-item"><div class="agent-dot"></div><div><div class="agent-text">Candidate Engagement Chatbot</div><div class="agent-kpi">24/7 FAQs</div></div></div>
+        <div class="agent-item"><div class="agent-dot"></div><div><div class="agent-text">Candidate Journey Orchestration</div><div class="agent-kpi">Stage-to-stage conversion</div></div></div>
+        <div class="agent-item"><div class="agent-dot"></div><div><div class="agent-text">Employee Onboarding Assistant</div><div class="agent-kpi">Onboarding completion</div></div></div>
+        <div class="agent-item"><div class="agent-dot"></div><div><div class="agent-text">Predictive Candidate Scoring</div><div class="agent-kpi">Hire quality index</div></div></div>
+      </div>
+    </div>
+    <div class="dept-card dept-hr">
+      <div class="dept-header"><div class="dept-icon">👥</div><div class="dept-name">HR</div></div>
+      <div class="dept-body">
+        <div class="agent-item"><div class="agent-dot"></div><div><div class="agent-text">Instant Policy Q&A Agent</div><div class="agent-kpi">HR ticket volume reduction</div><span class="agent-badge badge-soon">Soon</span></div></div>
+        <div class="agent-item"><div class="agent-dot"></div><div><div class="agent-text">Engagement & Pulse Survey Agent</div><div class="agent-kpi">eNPS tracking</div></div></div>
+        <div class="agent-item"><div class="agent-dot"></div><div><div class="agent-text">Performance Review & Feedback Agent</div><div class="agent-kpi">Manager hours saved</div></div></div>
+      </div>
+    </div>
+    <div class="dept-card dept-cross">
+      <div class="dept-header"><div class="dept-icon">🔗</div><div class="dept-name">Cross-Department</div></div>
+      <div class="dept-body">
+        <div class="agent-item"><div class="agent-dot"></div><div><div class="agent-text">Workflow Orchestration Agent</div><div class="agent-kpi">End-to-end cycle time</div><span class="agent-badge badge-priority">Priority</span></div></div>
+        <div class="agent-item"><div class="agent-dot"></div><div><div class="agent-text">Data & Analytics Governance</div><div class="agent-kpi">Data freshness & quality</div></div></div>
+        <div class="agent-item"><div class="agent-dot"></div><div><div class="agent-text">Document & Data Extraction</div><div class="agent-kpi">PDFs/emails/forms to systems</div></div></div>
+        <div class="agent-item"><div class="agent-dot"></div><div><div class="agent-text">Compliance & Audit Agent</div><div class="agent-kpi">Policy violations tracking</div></div></div>
+        <div class="agent-item"><div class="agent-dot"></div><div><div class="agent-text">Employee Experience & Wellbeing</div><div class="agent-kpi">Burnout/turnover signals</div></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-note">Home Genius Exteriors - AI Roadmap - Confidential</div>
+</body>
+</html>

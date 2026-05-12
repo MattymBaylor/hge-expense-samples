@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HGE AI Expense Overview — March 22 – April 22, 2026</title>
+<style>
+:root{--bg:#f8f8f6;--bg2:#fff;--tx:#1a1a1a;--tx2:#666;--tx3:#888;--bd:#e8e8e4;--bd2:#f0f0ec}
+[data-theme="dark"]{--bg:#141414;--bg2:#1e1e1e;--tx:#e8e8e4;--tx2:#aaa;--tx3:#777;--bd:#333;--bd2:#2a2a2a}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--tx);padding:2rem;transition:background .3s,color .3s}
+.container{max-width:1060px;margin:0 auto}
+.header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:2rem}
+.header-text h1{font-size:22px;font-weight:600;margin-bottom:4px}
+.header-text p{font-size:14px;color:var(--tx2)}
+.toggle{background:var(--bg2);border:1px solid var(--bd);border-radius:8px;padding:8px 16px;cursor:pointer;font-size:13px;color:var(--tx);font-family:inherit;transition:all .2s}
+.toggle:hover{border-color:var(--tx3)}
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:2rem}
+.metric{background:var(--bg2);border-radius:12px;padding:1.25rem;border:1px solid var(--bd);transition:background .3s;display:flex;flex-direction:column}
+.metric .label{font-size:12px;color:var(--tx3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:auto}
+.metric .value{font-size:28px;font-weight:600;padding-top:8px}
+.metric .sub{font-size:12px;color:var(--tx3);margin-top:2px}
+.green{color:#0f6e56}
+[data-theme="dark"] .green{color:#5dcaa5}
+.coral{color:#d85a30}
+[data-theme="dark"] .coral{color:#f0997b}
+.gray{color:#888}
+.charts{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:2rem}
+.card{background:var(--bg2);border-radius:12px;padding:1.5rem;border:1px solid var(--bd);transition:background .3s}
+.card h2{font-size:15px;font-weight:600;margin-bottom:1rem}
+.chart-wrap{position:relative;height:280px}
+.full{grid-column:1/-1}
+.legend{display:flex;flex-wrap:wrap;gap:16px;margin-bottom:12px;font-size:12px;color:var(--tx2)}
+.legend span{display:flex;align-items:center;gap:5px}
+.legend i{width:10px;height:10px;border-radius:2px;display:inline-block}
+.table-card{grid-column:1/-1}
+table{width:100%;border-collapse:collapse;font-size:13px}
+thead th{text-align:left;padding:10px 8px;border-bottom:2px solid var(--bd);color:var(--tx3);font-weight:500;font-size:12px;text-transform:uppercase;letter-spacing:.3px}
+thead th.r{text-align:right}
+tbody td{padding:8px;border-bottom:1px solid var(--bd2)}
+tbody td.r{text-align:right}
+.badge{font-size:11px;padding:3px 10px;border-radius:6px;font-weight:500;white-space:nowrap}
+.badge-prod{background:#e6f1fb;color:#185fa5}
+.badge-rd{background:#eeedfe;color:#534ab7}
+.badge-personal{background:#faece7;color:#d85a30}
+.badge-reclass{background:#f1efe8;color:#5f5e5a}
+[data-theme="dark"] .badge-prod{background:#0c447c;color:#b5d4f4}
+[data-theme="dark"] .badge-rd{background:#3c3489;color:#cecbf6}
+[data-theme="dark"] .badge-personal{background:#712b13;color:#f5c4b3}
+[data-theme="dark"] .badge-reclass{background:#444441;color:#d3d1c7}
+.notes{font-size:12px;color:var(--tx2);min-width:160px}
+.footer{text-align:center;font-size:12px;color:var(--tx3);margin-top:2rem;padding-top:1rem;border-top:1px solid var(--bd)}
+tfoot td{padding:10px 8px}
+@media(max-width:700px){
+  .metrics{grid-template-columns:repeat(2,1fr)}
+  .charts{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="header">
+  <div class="header-text">
+    <h1>HGE AI/Software Expense Overview</h1>
+    <p>Billing period: March 22 – April 22, 2026 &nbsp;|&nbsp; Prepared by Matt Martelli</p>
+  </div>
+  <button class="toggle" onclick="toggleTheme()">Switch to light</button>
+</div>
+
+<div class="metrics">
+  <div class="metric">
+    <div class="label">Total charged</div>
+    <div class="value">$6,327</div>
+    <div class="sub">40 line items</div>
+  </div>
+  <div class="metric">
+    <div class="label">Business justified</div>
+    <div class="value green">$5,057</div>
+    <div class="sub">~80% of total</div>
+  </div>
+  <div class="metric">
+    <div class="label">Personal / removed</div>
+    <div class="value coral">$248</div>
+    <div class="sub">3 vendors excluded</div>
+  </div>
+  <div class="metric">
+    <div class="label">Partial + reclassify</div>
+    <div class="value gray">$1,022</div>
+    <div class="sub">Adjustments & meals</div>
+  </div>
+</div>
+
+<div class="charts">
+
+  <div class="card">
+    <h2>Spend by category</h2>
+    <div class="chart-wrap"><canvas id="pieChart"></canvas></div>
+  </div>
+
+  <div class="card">
+    <h2>Business vs. personal allocation</h2>
+    <div class="chart-wrap"><canvas id="allocChart"></canvas></div>
+  </div>
+
+  <div class="card full">
+    <h2>Top vendors by amount</h2>
+    <div class="legend">
+      <span><i style="background:#185fa5"></i> Production</span>
+      <span><i style="background:#534ab7"></i> R&D</span>
+      <span><i style="background:#d85a30"></i> Personal</span>
+      <span><i style="background:#888"></i> Reclassify</span>
+    </div>
+    <div style="position:relative;height:460px"><canvas id="barChart"></canvas></div>
+  </div>
+
+  <div class="card full table-card">
+    <h2>Full line-item detail</h2>
+    <div style="overflow-x:auto">
+    <table>
+      <thead>
+        <tr>
+          <th>Vendor</th>
+          <th class="r">Amount</th>
+          <th>Email</th>
+          <th class="r">Biz %</th>
+          <th class="r">Biz amount</th>
+          <th>Category</th>
+          <th>Business use</th>
+          <th>Additional notes</th>
+        </tr>
+      </thead>
+      <tbody id="tbl"></tbody>
+      <tfoot>
+        <tr style="font-weight:600;border-top:2px solid var(--bd)">
+          <td>Totals</td>
+          <td class="r">$6,327.05</td>
+          <td></td>
+          <td class="r">~80%</td>
+          <td class="r green">$5,057.19</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tfoot>
+    </table>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">HGE AI Expense Overview &mdash; March 22 – April 22, 2026</div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+function toggleTheme(){
+  const d=document.documentElement;
+  const btn=document.querySelector('.toggle');
+  if(d.getAttribute('data-theme')==='dark'){
+    d.removeAttribute('data-theme');
+    btn.textContent='Switch to dark';
+  }else{
+    d.setAttribute('data-theme','dark');
+    btn.textContent='Switch to light';
+  }
+  renderCharts();
+}
+
+const vendors = [
+  {v:'Anthropic/Claude',a:2068.75,e:'mattmartelli@mac.com',bp:.80,ba:1655.00,c:'Production',j:'API calls powering 138+ n8n workflows (voice AI, lead gen, CRM, operations). 20% personal use deducted.',n:''},
+  {v:'Genspark.AI',a:739.68,e:'mattmartelli@mac.com',bp:.50,ba:369.84,c:'R&D',j:'Multi-model comparison platform. 50% personal exploration deducted.',n:''},
+  {v:'HeyGen',a:390.05,e:'mmartelli@homegeniusexteriors.com',bp:1,ba:390.05,c:'Production',j:'AI avatar videos for confirmations & marketing. HGE account.',n:''},
+  {v:'Higgsfield',a:340.00,e:'mattmartelli@mac.com',bp:1,ba:340.00,c:'R&D',j:'Video AI platform evaluated for marketing content generation.',n:''},
+  {v:'Lovable',a:327.54,e:'mattmartelli@mac.com',bp:1,ba:327.54,c:'Production',j:'Built HGE Yelp leads dashboard (growthmindset.cloud).',n:''},
+  {v:'Perplexity',a:278.60,e:'mattmartelli@mac.com',bp:1,ba:278.60,c:'Production',j:'AI research for competitive analysis & content development.',n:''},
+  {v:'OpenAI',a:255.13,e:'mattmartelli@mac.com',bp:1,ba:255.13,c:'Production',j:'GPT API + ChatGPT Plus powering n8n workflows.',n:''},
+  {v:'Zapier',a:237.26,e:'mmartelli@homegeniusexteriors.com',bp:1,ba:237.26,c:'Production',j:'Workflow automation — 100% HGE operations.',n:''},
+  {v:'OpenArt AI',a:165.00,e:'mattmartelli@mac.com',bp:1,ba:165.00,c:'R&D',j:'AI image gen evaluated vs. Midjourney & Firefly.',n:''},
+  {v:'Retell AI',a:163.91,e:'mattmartelli@mac.com',bp:1,ba:163.91,c:'Production',j:'Voice AI infrastructure for production phone agents.',n:''},
+  {v:'Comfy.org',a:100.00,e:'mattmartelli@mac.com',bp:1,ba:100.00,c:'R&D',j:'Local AI image pipeline evaluation.',n:''},
+  {v:'Adobe',a:99.98,e:'mattmartelli@mac.com',bp:1,ba:99.98,c:'Production',j:'Photoshop + Firefly AI for creative assets.',n:''},
+  {v:'Genery Inc.',a:99.95,e:'mattmartelli@mac.com',bp:1,ba:99.95,c:'R&D',j:'AI generation platform evaluated during model comparison.',n:''},
+  {v:'ElevenLabs',a:99.00,e:'mattmartelli@mac.com',bp:1,ba:99.00,c:'R&D',j:'Voice AI — part of 30-model evaluation.',n:''},
+  {v:'Blotato',a:87.00,e:'matt@growthmindset.ai',bp:0,ba:0,c:'Personal',j:'Growth Mindset AI (Matt\'s own business). Not HGE.',n:''},
+  {v:'Apify',a:83.84,e:'matt@growthmindset.ai',bp:0,ba:0,c:'Personal',j:'Growth Mindset AI (Matt\'s own business). Not HGE.',n:''},
+  {v:'Arcads.AI',a:77.00,e:'mattmartelli@mac.com',bp:0,ba:0,c:'Personal',j:'Personal use only. Removed.',n:''},
+  {v:'Hostinger',a:73.66,e:'mattmartelli@mac.com',bp:1,ba:73.66,c:'Production',j:'Web hosting for business domains.',n:''},
+  {v:'Airtable',a:72.00,e:'mattmartelli@mac.com',bp:1,ba:72.00,c:'Production',j:'Database & operations management.',n:''},
+  {v:'Midjourney',a:60.00,e:'mattmartelli@mac.com',bp:1,ba:60.00,c:'R&D',j:'Premium image gen evaluated for quality.',n:''},
+  {v:'Enhancor/Synthesia',a:45.00,e:'mattmartelli@mac.com',bp:1,ba:45.00,c:'R&D',j:'AI video generation evaluated for training content.',n:''},
+  {v:'HubSpot',a:42.85,e:'mattmartelli@mac.com',bp:1,ba:42.85,c:'Production',j:'CRM for lead tracking & client management.',n:''},
+  {v:'TechSmith',a:39.00,e:'mattmartelli@mac.com',bp:1,ba:39.00,c:'Production',j:'Screen capture for documentation & training.',n:''},
+  {v:'Google Ads',a:38.94,e:'mattmartelli@mac.com',bp:1,ba:38.94,c:'Production',j:'Paid advertising for lead generation.',n:''},
+  {v:'Grok XAI',a:30.00,e:'mattmartelli@mac.com',bp:1,ba:30.00,c:'R&D',j:'xAI model for MoE Oracle adversarial testing.',n:''},
+  {v:'D-ID Studio',a:29.00,e:'mattmartelli@mac.com',bp:1,ba:29.00,c:'R&D',j:'AI avatar platform evaluated alongside HeyGen.',n:''},
+  {v:'Whimsical',a:24.00,e:'mattmartelli@mac.com',bp:1,ba:24.00,c:'Production',j:'Diagramming for workflow design & documentation.',n:''},
+  {v:'Notion',a:24.00,e:'mattmartelli@mac.com',bp:1,ba:24.00,c:'Production',j:'Knowledge base & project management.',n:''},
+  {v:'Railway',a:20.00,e:'mattmartelli@mac.com',bp:1,ba:20.00,c:'Production',j:'Cloud hosting for backend services.',n:''},
+  {v:'Vercel',a:20.00,e:'mattmartelli@mac.com',bp:1,ba:20.00,c:'Production',j:'Frontend hosting for lead magnets & web apps.',n:''},
+  {v:'Abacus.AI',a:20.00,e:'mattmartelli@mac.com',bp:1,ba:20.00,c:'R&D',j:'AI model evaluation platform.',n:''},
+  {v:'ShotDeck',a:12.95,e:'mattmartelli@mac.com',bp:1,ba:12.95,c:'Production',j:'Cinematography reference for video production.',n:''},
+  {v:'Cal.com',a:10.00,e:'mattmartelli@mac.com',bp:1,ba:10.00,c:'Production',j:'Scheduling integrated with n8n workflows.',n:''},
+  {v:'Pixa.com',a:10.00,e:'mattmartelli@mac.com',bp:1,ba:10.00,c:'Production',j:'Stock image assets for marketing.',n:''},
+  {v:'KlingAI',a:8.80,e:'mattmartelli@mac.com',bp:1,ba:8.80,c:'R&D',j:'Video AI evaluated for short-form content.',n:''},
+  {v:'Google Cloud',a:5.53,e:'mattmartelli@mac.com',bp:1,ba:5.53,c:'Production',j:'Cloud infrastructure (compute, storage, APIs).',n:''},
+  {v:'OpenAI (API)',a:5.35,e:'mattmartelli@mac.com',bp:1,ba:5.35,c:'Production',j:'API usage for specific n8n workflows.',n:''},
+  {v:'GitHub',a:4.00,e:'mattmartelli@mac.com',bp:1,ba:4.00,c:'Production',j:'Code repository for automation scripts.',n:''},
+  {v:'Meals (Uber Eats, Dominos)',a:238.43,e:'—',bp:0,ba:0,c:'Reclassify',j:'Food delivery — reclassify to meals/entertainment.',n:''}
+];
+
+const catColors={Production:'#185fa5','R&D':'#534ab7',Personal:'#d85a30',Reclassify:'#888'};
+const badgeClass={Production:'badge-prod','R&D':'badge-rd',Personal:'badge-personal',Reclassify:'badge-reclass'};
+
+let charts=[];
+function renderCharts(){
+  charts.forEach(c=>c.destroy());
+  charts=[];
+  const isDark=document.documentElement.getAttribute('data-theme')==='dark';
+  const gridColor=isDark?'rgba(255,255,255,.08)':'rgba(0,0,0,.06)';
+  const tickColor=isDark?'#aaa':'#666';
+
+  const catTotals={};
+  vendors.forEach(v=>{catTotals[v.c]=(catTotals[v.c]||0)+v.a});
+  charts.push(new Chart(document.getElementById('pieChart'),{
+    type:'doughnut',
+    data:{labels:Object.keys(catTotals),datasets:[{data:Object.values(catTotals).map(v=>Math.round(v)),backgroundColor:Object.keys(catTotals).map(c=>catColors[c]),borderWidth:2,borderColor:isDark?'#1e1e1e':'#fff'}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{padding:16,usePointStyle:true,pointStyle:'rectRounded',font:{size:12},color:tickColor}},tooltip:{callbacks:{label:ctx=>' $'+ctx.parsed.toLocaleString()+' ('+Math.round(ctx.parsed/6327*100)+'%)'}}}}
+  }));
+
+  const bizTotal=vendors.reduce((s,v)=>s+v.ba,0);
+  const persAdj=vendors.filter(v=>v.c==='Personal').reduce((s,v)=>s+v.a,0);
+  const partialAdj=vendors.filter(v=>v.bp>0&&v.bp<1).reduce((s,v)=>s+(v.a-v.ba),0);
+  const mealsAdj=vendors.filter(v=>v.c==='Reclassify').reduce((s,v)=>s+v.a,0);
+  charts.push(new Chart(document.getElementById('allocChart'),{
+    type:'doughnut',
+    data:{labels:['Business justified','Personal (removed)','Partial use adjustment','Reclassify (meals)'],datasets:[{data:[Math.round(bizTotal),Math.round(persAdj),Math.round(partialAdj),Math.round(mealsAdj)],backgroundColor:[isDark?'#5dcaa5':'#0f6e56',isDark?'#f0997b':'#d85a30',isDark?'#ef9f27':'#ba7517','#888'],borderWidth:2,borderColor:isDark?'#1e1e1e':'#fff'}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{padding:16,usePointStyle:true,pointStyle:'rectRounded',font:{size:12},color:tickColor}},tooltip:{callbacks:{label:ctx=>' $'+ctx.parsed.toLocaleString()}}}}
+  }));
+
+  const sorted=vendors.filter(v=>v.a>0).sort((a,b)=>a.a-b.a);
+  charts.push(new Chart(document.getElementById('barChart'),{
+    type:'bar',
+    data:{labels:sorted.map(d=>d.v),datasets:[{data:sorted.map(d=>d.a),backgroundColor:sorted.map(d=>catColors[d.c]),borderRadius:3}]},
+    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>' $'+ctx.parsed.x.toLocaleString('en-US',{minimumFractionDigits:2}),afterLabel:ctx=>sorted[ctx.dataIndex].c}}},scales:{x:{ticks:{callback:v=>'$'+v.toLocaleString(),color:tickColor},grid:{color:gridColor}},y:{grid:{display:false},ticks:{font:{size:11},color:tickColor}}}}
+  }));
+}
+
+const tbl=document.getElementById('tbl');
+vendors.forEach(r=>{
+  const tr=document.createElement('tr');
+  const pct=r.bp===1?'100%':r.bp===0?'0%':Math.round(r.bp*100)+'%';
+  tr.innerHTML=`
+    <td style="padding:8px;font-weight:500">${r.v}</td>
+    <td class="r" style="padding:8px">$${r.a.toLocaleString('en-US',{minimumFractionDigits:2})}</td>
+    <td style="padding:8px;font-size:12px;color:var(--tx3)">${r.e}</td>
+    <td class="r" style="padding:8px">${pct}</td>
+    <td class="r" style="padding:8px"><span class="green">$${r.ba.toLocaleString('en-US',{minimumFractionDigits:2})}</span></td>
+    <td style="padding:8px"><span class="badge ${badgeClass[r.c]}">${r.c}</span></td>
+    <td style="padding:8px;font-size:12px;color:var(--tx2);max-width:220px">${r.j}</td>
+    <td class="notes" style="padding:8px">${r.n}</td>`;
+  tbl.appendChild(tr);
+});
+
+renderCharts();
+</script>
+</body>
+</html>
