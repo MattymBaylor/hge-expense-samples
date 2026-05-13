@@ -271,6 +271,14 @@
       flex-shrink: 0;
     }
 
+    /* ── Recalc flash ── */
+    @keyframes flash {
+      0%   { opacity: 1; }
+      30%  { opacity: 0.4; }
+      100% { opacity: 1; }
+    }
+    .recalc-flash { animation: flash 0.4s ease; }
+
     /* ── Responsive ── */
     @media (max-width: 1000px) {
       .metrics, .month-row { grid-template-columns: repeat(2, 1fr); }
@@ -331,23 +339,23 @@
   <div class="month-row">
     <div class="card month-card">
       <div class="month-label">Jan (Jan 1 – Jan 22)</div>
-      <div class="amount">$1,982.58</div>
-      <div class="alloc">Operational allocation: <span class="green">$1,375.96</span></div>
+      <div class="amount" id="sumJanTotal">$1,982.58</div>
+      <div class="alloc">Operational allocation: <span class="green" id="sumJanAlloc">$1,375.96</span></div>
     </div>
     <div class="card month-card">
       <div class="month-label">Feb Statement (Jan 23 – Feb 22)</div>
-      <div class="amount">$4,097.22</div>
-      <div class="alloc">Operational allocation: <span class="green">$3,121.80</span></div>
+      <div class="amount" id="sumFebTotal">$4,097.22</div>
+      <div class="alloc">Operational allocation: <span class="green" id="sumFebAlloc">$3,121.80</span></div>
     </div>
     <div class="card month-card">
       <div class="month-label">Mar Statement (Feb 23 – Mar 23)</div>
-      <div class="amount">$5,313.01</div>
-      <div class="alloc">Operational allocation: <span class="green">$4,264.53</span></div>
+      <div class="amount" id="sumMarTotal">$5,313.01</div>
+      <div class="alloc">Operational allocation: <span class="green" id="sumMarAlloc">$4,264.53</span></div>
     </div>
     <div class="card month-card">
       <div class="month-label">Apr Statement (Mar 24 – Apr 23)</div>
-      <div class="amount">$6,440.85</div>
-      <div class="alloc">Operational allocation: <span class="green">$6,217.93</span></div>
+      <div class="amount" id="sumAprTotal">$6,440.85</div>
+      <div class="alloc">Operational allocation: <span class="green" id="sumAprAlloc">$6,217.93</span></div>
     </div>
   </div>
 
@@ -355,13 +363,13 @@
   <div class="metrics">
     <div class="card metric">
       <div class="label">Total Charged (4 statements)</div>
-      <div class="value">$17,834</div>
-      <div class="note">All non-zero vendor charges</div>
+      <div class="value" id="metricTotal">$17,834</div>
+      <div class="note" id="metricTotalNote">All non-zero vendor charges</div>
     </div>
     <div class="card metric">
       <div class="label">Operational Allocation</div>
-      <div class="value green">$14,980</div>
-      <div class="note">~84% of total charged</div>
+      <div class="value green" id="metricOpAlloc">$14,980</div>
+      <div class="note" id="metricOpPct">~84% of total charged</div>
     </div>
     <div class="card metric">
       <div class="label">Excluded / Non-HGE</div>
@@ -443,14 +451,14 @@
         <tfoot>
           <tr>
             <td colspan="2" style="font-weight:700;">Totals</td>
-            <td class="money" style="font-weight:700;">$1,982.58</td>
-            <td class="money" style="font-weight:700;">$4,097.22</td>
-            <td class="money" style="font-weight:700;">$5,313.01</td>
-            <td class="money" style="font-weight:700;">$6,440.85</td>
-            <td class="money" style="font-weight:700;">$17,833.66</td>
+            <td class="money" id="tfootJan"  style="font-weight:700;">$1,982.58</td>
+            <td class="money" id="tfootFeb"  style="font-weight:700;">$4,097.22</td>
+            <td class="money" id="tfootMar"  style="font-weight:700;">$5,313.01</td>
+            <td class="money" id="tfootApr"  style="font-weight:700;">$6,440.85</td>
+            <td class="money" id="tfootTotal" style="font-weight:700;">$17,833.66</td>
             <td class="money">—</td>
             <td class="money">—</td>
-            <td class="money green" style="font-weight:700;">$14,980.22</td>
+            <td class="money green" id="tfootOpAlloc" style="font-weight:700;">$14,980.22</td>
             <td colspan="5"></td>
           </tr>
         </tfoot>
@@ -987,28 +995,148 @@ const flagClass = {
   'Pending Receipt':      'flag-pending'
 };
 
-// ── Format dollar amount left-aligned ──
+// ── Parse a money string back to a number ──
+function parseMoney(str) {
+  if (!str) return 0;
+  var s = str.replace(/[$,\s]/g, '').trim();
+  if (s === '—' || s === '') return 0;
+  var n = parseFloat(s);
+  return isNaN(n) ? 0 : n;
+}
+
+// ── Parse a percent string to a decimal (0–1) ──
+function parsePct(str) {
+  if (!str) return 0;
+  var s = str.replace(/%/g, '').trim();
+  var n = parseFloat(s);
+  if (isNaN(n)) return 0;
+  return n / 100;
+}
+
+// ── Format dollar amount ──
 function fmt(n) {
   if (!n || n === 0) return '—';
   return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
+// ── Format dollar for summary (no cents) ──
+function fmtK(n) {
+  return '$' + Math.round(n).toLocaleString('en-US');
+}
+
+// ── Flash an element briefly to signal a recalc ──
+function flash(el) {
+  el.classList.remove('recalc-flash');
+  void el.offsetWidth; // reflow
+  el.classList.add('recalc-flash');
+}
+
+// ── Recalculate totals from all VISIBLE rows in the full table ──
+// Reads live DOM: Total Charged (col 6), Op% (col 7), Jan(2) Feb(3) Mar(4) Apr(5)
+// Updates: Op Allocation cell, tfoot totals, summary cards/months
+function recalcTotals() {
+  var rows = document.querySelectorAll('#vendorBody tr');
+  var totJan = 0, totFeb = 0, totMar = 0, totApr = 0;
+  var totCharged = 0, totOpAlloc = 0;
+
+  rows.forEach(function(tr) {
+    var cells = tr.querySelectorAll('td');
+    if (cells.length < 10) return;
+
+    var jan    = parseMoney(cells[2].innerText);
+    var feb    = parseMoney(cells[3].innerText);
+    var mar    = parseMoney(cells[4].innerText);
+    var apr    = parseMoney(cells[5].innerText);
+    var total  = parseMoney(cells[6].innerText);
+    var opPct  = parsePct(cells[7].innerText);
+
+    // If total charged is 0 but months have values, sum them
+    if (total === 0) total = jan + feb + mar + apr;
+
+    var opAlloc = total * opPct;
+
+    // Update the Op Allocation cell (col 9) live
+    cells[9].textContent = opAlloc > 0
+      ? '$' + opAlloc.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+      : '—';
+
+    totJan      += jan;
+    totFeb      += feb;
+    totMar      += mar;
+    totApr      += apr;
+    totCharged  += total;
+    totOpAlloc  += opAlloc;
+  });
+
+  // ── Update tfoot ──
+  var ids = ['tfootJan','tfootFeb','tfootMar','tfootApr','tfootTotal','tfootOpAlloc'];
+  var vals = [totJan, totFeb, totMar, totApr, totCharged, totOpAlloc];
+  ids.forEach(function(id, i) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    el.textContent = vals[i] > 0
+      ? '$' + vals[i].toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+      : '—';
+    flash(el);
+  });
+
+  // ── Update monthly summary cards ──
+  // For monthly alloc we need per-month op allocation: sum(op% * that-month-amount)
+  var allocJan = 0, allocFeb = 0, allocMar = 0, allocApr = 0;
+  rows.forEach(function(tr) {
+    var cells = tr.querySelectorAll('td');
+    if (cells.length < 10) return;
+    var jan   = parseMoney(cells[2].innerText);
+    var feb   = parseMoney(cells[3].innerText);
+    var mar   = parseMoney(cells[4].innerText);
+    var apr   = parseMoney(cells[5].innerText);
+    var opPct = parsePct(cells[7].innerText);
+    allocJan += jan * opPct;
+    allocFeb += feb * opPct;
+    allocMar += mar * opPct;
+    allocApr += apr * opPct;
+  });
+
+  var monthData = [
+    { tot: 'sumJanTotal', alloc: 'sumJanAlloc', t: totJan,  a: allocJan },
+    { tot: 'sumFebTotal', alloc: 'sumFebAlloc', t: totFeb,  a: allocFeb },
+    { tot: 'sumMarTotal', alloc: 'sumMarAlloc', t: totMar,  a: allocMar },
+    { tot: 'sumAprTotal', alloc: 'sumAprAlloc', t: totApr,  a: allocApr }
+  ];
+  monthData.forEach(function(m) {
+    var te = document.getElementById(m.tot);
+    var ae = document.getElementById(m.alloc);
+    if (te) { te.textContent = fmt(m.t) || '$0.00'; flash(te); }
+    if (ae) { ae.textContent = fmt(m.a) || '$0.00'; flash(ae); }
+  });
+
+  // ── Update big metric cards ──
+  var metTotal   = document.getElementById('metricTotal');
+  var metAlloc   = document.getElementById('metricOpAlloc');
+  var metPctNote = document.getElementById('metricOpPct');
+  if (metTotal) { metTotal.textContent = fmtK(totCharged); flash(metTotal); }
+  if (metAlloc) { metAlloc.textContent = fmtK(totOpAlloc); flash(metAlloc); }
+  if (metPctNote && totCharged > 0) {
+    metPctNote.textContent = '~' + Math.round((totOpAlloc / totCharged) * 100) + '% of total charged';
+  }
+}
+
 // ── Build Top 10 table ──
 function buildTop10() {
-  const sorted = vendors
+  var sorted = vendors
     .filter(function(v) { return v.a > 0; })
     .sort(function(a, b) { return (b.a * b.bp) - (a.a * a.bp); })
     .slice(0, 10);
 
-  const tbody = document.getElementById('top10Body');
+  var tbody = document.getElementById('top10Body');
   tbody.innerHTML = '';
 
   sorted.forEach(function(r, i) {
-    const opAlloc = (r.a * r.bp).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    const tc      = tagClass[r.c] || 'prod';
-    const purpose = top10Purpose[r.v] || r.j;
+    var opAlloc = (r.a * r.bp).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    var tc      = tagClass[r.c] || 'prod';
+    var purpose = top10Purpose[r.v] || r.j;
 
-    const tr = document.createElement('tr');
+    var tr = document.createElement('tr');
     tr.innerHTML =
       '<td><span class="rank">' + (i + 1) + '</span></td>' +
       '<td style="font-weight:600; white-space:nowrap;">' + r.v + '</td>' +
@@ -1026,21 +1154,21 @@ function buildTop10() {
 
 // ── Build full vendor detail table ──
 function buildTable(filterCat) {
-  const tbody = document.getElementById('vendorBody');
+  var tbody = document.getElementById('vendorBody');
   tbody.innerHTML = '';
 
-  const rows = filterCat === 'all'
+  var rows = filterCat === 'all'
     ? vendors
     : vendors.filter(function(v) { return v.c === filterCat; });
 
   rows.forEach(function(r) {
-    const opPct   = r.bp === 1 ? '100%' : r.bp === 0 ? '0%' : Math.round(r.bp * 100) + '%';
-    const nonPct  = r.bp === 1 ? '0%'   : r.bp === 0 ? '100%' : Math.round((1 - r.bp) * 100) + '%';
-    const opAlloc = (r.a * r.bp).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    const tc      = tagClass[r.c]     || 'prod';
-    const fc      = flagClass[r.flag] || 'flag-ok';
+    var opPct   = r.bp === 1 ? '100%' : r.bp === 0 ? '0%' : Math.round(r.bp * 100) + '%';
+    var nonPct  = r.bp === 1 ? '0%'   : r.bp === 0 ? '100%' : Math.round((1 - r.bp) * 100) + '%';
+    var opAlloc = (r.a * r.bp).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    var tc      = tagClass[r.c]     || 'prod';
+    var fc      = flagClass[r.flag] || 'flag-ok';
 
-    const tr = document.createElement('tr');
+    var tr = document.createElement('tr');
     tr.setAttribute('data-cat', r.c);
 
     tr.innerHTML =
@@ -1062,6 +1190,14 @@ function buildTable(filterCat) {
 
     tbody.appendChild(tr);
   });
+
+  // ── Attach recalc listener to editable cells (cols 2–9) ──
+  // Triggers on blur so editing feels natural; recalcs whole table
+  tbody.querySelectorAll('td[contenteditable="true"]').forEach(function(td) {
+    td.addEventListener('blur', function() {
+      recalcTotals();
+    });
+  });
 }
 
 // ── Filter handler ──
@@ -1069,23 +1205,24 @@ function filterVendors(cat, btn) {
   document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
   btn.classList.add('active');
   buildTable(cat);
+  recalcTotals();
 }
 
 // ── Export CSV (reads live DOM — captures edits + checkbox states) ──
 function exportCSV() {
-  const headers = [
+  var headers = [
     'Vendor', 'Category', 'Jan', 'Feb', 'Mar', 'Apr',
     'Total Charged', 'Operational %', 'Non-HGE %', 'Operational Allocation',
     'Account / Email', 'Review Flag', 'Notes',
     'Verified HGE Email', 'Active Subscription'
   ];
 
-  const rows = document.querySelectorAll('#vendorBody tr');
-  const csvLines = [headers.map(function(h) { return '"' + h + '"'; }).join(',')];
+  var rows = document.querySelectorAll('#vendorBody tr');
+  var csvLines = [headers.map(function(h) { return '"' + h + '"'; }).join(',')];
 
   rows.forEach(function(tr) {
-    const cells = tr.querySelectorAll('td');
-    const vals  = [];
+    var cells = tr.querySelectorAll('td');
+    var vals  = [];
     cells.forEach(function(td, i) {
       if (i === 13 || i === 14) {
         var cb = td.querySelector('input[type="checkbox"]');
