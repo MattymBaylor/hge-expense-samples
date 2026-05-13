@@ -104,20 +104,6 @@
       padding-left: 16px;
     }
     .exec-summary p { font-size: 14px; color: var(--tx); line-height: 1.65; }
-    .pills {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 14px;
-    }
-    .pill {
-      background: var(--soft);
-      border: 1px solid var(--bd);
-      border-radius: 999px;
-      padding: 6px 14px;
-      font-size: 12px;
-      color: var(--muted);
-    }
 
     /* ── Month row ── */
     .month-row {
@@ -338,12 +324,6 @@
         The 138+ active n8n automation workflows, voice AI phone systems, avatar-based communications,
         and lead management infrastructure collectively represent the core of HGE's AI operational stack.
       </p>
-    </div>
-    <div class="pills">
-      <div class="pill">Production Infrastructure</div>
-      <div class="pill">Research &amp; Development</div>
-      <div class="pill">Reclassified Expenses</div>
-      <div class="pill">Excluded / Non-Operational</div>
     </div>
   </div>
 
@@ -1015,7 +995,6 @@ function fmt(n) {
 
 // ── Build Top 10 table ──
 function buildTop10() {
-  // Sort by operational allocation descending, take top 10
   const sorted = vendors
     .filter(function(v) { return v.a > 0; })
     .sort(function(a, b) { return (b.a * b.bp) - (a.a * a.bp); })
@@ -1109,11 +1088,9 @@ function exportCSV() {
     const vals  = [];
     cells.forEach(function(td, i) {
       if (i === 13 || i === 14) {
-        // checkbox columns — export TRUE/FALSE
         var cb = td.querySelector('input[type="checkbox"]');
         vals.push(cb ? (cb.checked ? 'TRUE' : 'FALSE') : '');
       } else {
-        // read current DOM text — captures any in-browser edits
         var txt = td.innerText.trim().replace(/\n/g, ' ');
         txt = txt.replace(/"/g, '""');
         vals.push('"' + txt + '"');
