@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>HGE AI Expense Executive Review — Jan–Apr 2026</title>
   <style>
-    /* ── Theme tokens ── */
     :root {
       --bg:    #f8f8f6;
       --card:  #ffffff;
@@ -30,8 +29,6 @@
       --gray:  #aaaaaa;
       --blue:  #4da3ff;
     }
-
-    /* ── Reset & base ── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -43,8 +40,6 @@
       transition: background .25s, color .25s;
     }
     .wrap { max-width: 1440px; margin: 0 auto; }
-
-    /* ── Header ── */
     .top {
       display: flex;
       justify-content: space-between;
@@ -67,8 +62,6 @@
       transition: border-color .2s;
     }
     .btn:hover { border-color: var(--muted); }
-
-    /* ── Cards / layout ── */
     .card {
       background: var(--card);
       border: 1px solid var(--bd);
@@ -78,8 +71,6 @@
     }
     .card h2 { font-size: 15px; font-weight: 600; margin-bottom: 14px; }
     .section { margin-top: 18px; }
-
-    /* ── Metric cards ── */
     .metrics {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -98,15 +89,8 @@
     .green { color: var(--green); }
     .coral { color: var(--coral); }
     .gray  { color: var(--gray);  }
-
-    /* ── Executive Summary ── */
-    .exec-summary {
-      border-left: 4px solid var(--green);
-      padding-left: 16px;
-    }
+    .exec-summary { border-left: 4px solid var(--green); padding-left: 16px; }
     .exec-summary p { font-size: 14px; color: var(--tx); line-height: 1.65; }
-
-    /* ── Month row ── */
     .month-row {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -123,8 +107,6 @@
     }
     .month-card .amount { font-size: 22px; font-weight: 700; margin-bottom: 2px; }
     .month-card .alloc  { font-size: 13px; color: var(--muted); }
-
-    /* ── Tables ── */
     table { width: 100%; border-collapse: collapse; font-size: 13px; }
     thead th {
       text-align: left;
@@ -146,8 +128,6 @@
       padding: 10px 8px;
       font-weight: 700;
     }
-
-    /* ── Money columns ── */
     .money {
       text-align: left;
       font-variant-numeric: tabular-nums;
@@ -155,18 +135,11 @@
       font-size: 12px;
       white-space: nowrap;
     }
-
-    /* ── Editable cells ── */
-    td[contenteditable="true"] {
-      outline: none;
-      cursor: text;
-    }
+    td[contenteditable="true"] { outline: none; cursor: text; }
     td[contenteditable="true"]:focus {
       background: color-mix(in srgb, var(--green) 10%, transparent);
       border-radius: 4px;
     }
-
-    /* ── Category badges ── */
     .tag {
       display: inline-block;
       border-radius: 6px;
@@ -183,21 +156,13 @@
     [data-theme="dark"] .rd      { background: #3c3489; color: #cecbf6; }
     [data-theme="dark"] .reclass { background: #444441; color: #d3d1c7; }
     [data-theme="dark"] .exclude { background: #712b13; color: #f5c4b3; }
-
-    /* ── Review flag badges ── */
     .flag-ok      { background: #e6f8ef; color: #0a6b3c; }
     .flag-review  { background: #fff3cd; color: #856404; }
     .flag-pending { background: #fdecea; color: #c0392b; }
     [data-theme="dark"] .flag-ok      { background: #0b3d22; color: #7ee6ac; }
     [data-theme="dark"] .flag-review  { background: #4a3500; color: #ffd966; }
     [data-theme="dark"] .flag-pending { background: #5c1a14; color: #f5a99a; }
-
-    /* ── Filter toolbar ── */
-    .toolbar {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
+    .toolbar { display: flex; flex-wrap: wrap; gap: 8px; }
     .filter-btn {
       background: var(--card);
       border: 1px solid var(--bd);
@@ -214,16 +179,12 @@
       color: var(--bg);
       border-color: var(--tx);
     }
-
-    /* ── Checkboxes ── */
     input[type="checkbox"] {
       width: 16px;
       height: 16px;
       cursor: pointer;
       accent-color: var(--green);
     }
-
-    /* ── Export button — blue ── */
     .export-btn {
       background: #1a6bbf;
       color: #ffffff;
@@ -240,8 +201,6 @@
     }
     [data-theme="dark"] .export-btn { background: #2d80d6; }
     .export-btn:hover { opacity: .85; }
-
-    /* ── Action bar ── */
     .action-bar {
       display: flex;
       justify-content: space-between;
@@ -250,8 +209,6 @@
       gap: 10px;
       margin-bottom: 14px;
     }
-
-    /* ── Top-10 rank badge ── */
     .rank {
       display: inline-flex;
       align-items: center;
@@ -266,16 +223,12 @@
       color: var(--muted);
       flex-shrink: 0;
     }
-
-    /* ── Recalc flash ── */
     @keyframes flash {
       0%   { opacity: 1; }
       30%  { opacity: 0.4; }
       100% { opacity: 1; }
     }
     .recalc-flash { animation: flash 0.4s ease; }
-
-    /* ── Footer ── */
     .footer {
       margin-top: 24px;
       padding-top: 16px;
@@ -284,15 +237,12 @@
       color: var(--muted);
       text-align: center;
     }
-
-    /* ── Overflow wrapper for wide table ── */
     .tbl-wrap { overflow-x: auto; }
   </style>
 </head>
 <body>
 <div class="wrap">
 
-  <!-- ── Header ── -->
   <div class="top">
     <div>
       <h1>HGE AI / Software Expense Executive Review</h1>
@@ -305,7 +255,6 @@
     <button class="btn" onclick="toggleTheme()">Toggle theme</button>
   </div>
 
-  <!-- ── Executive Summary ── -->
   <div class="card section" style="margin-top:0; margin-bottom:18px;">
     <h2>Executive Summary</h2>
     <div class="exec-summary">
@@ -321,7 +270,6 @@
     </div>
   </div>
 
-  <!-- ── Monthly totals ── -->
   <div class="month-row">
     <div class="card month-card">
       <div class="month-label">Jan (Jan 1 – Jan 22)</div>
@@ -345,7 +293,6 @@
     </div>
   </div>
 
-  <!-- ── Metric cards ── -->
   <div class="metrics">
     <div class="card metric">
       <div class="label">Total Charged (4 statements)</div>
@@ -369,7 +316,6 @@
     </div>
   </div>
 
-  <!-- ── Top 10 Platforms ── -->
   <div class="card section">
     <h2>Top 10 Platforms by Operational Spend</h2>
     <div class="tbl-wrap">
@@ -393,10 +339,8 @@
     </div>
   </div>
 
-  <!-- ── Detailed Vendor Review ── -->
   <div class="card section">
     <h2>Detailed Vendor Review — All Non-Zero Charges</h2>
-
     <div class="action-bar">
       <div class="toolbar" id="filterBar">
         <button class="filter-btn active" onclick="filterVendors('all', this)">All</button>
@@ -407,7 +351,6 @@
       </div>
       <button class="export-btn" onclick="exportCSV()">&#8595; Export CSV</button>
     </div>
-
     <div class="tbl-wrap">
       <table id="vendorTable">
         <thead>
@@ -422,7 +365,7 @@
             <th class="money">Operational %</th>
             <th class="money">Non-HGE %</th>
             <th class="money">Operational Allocation</th>
-            <th>Account / Email</th>
+            <th>Account Emails</th>
             <th>Review Flag</th>
             <th>Notes</th>
             <th style="text-align:center;">Verified HGE Email</th>
@@ -448,7 +391,6 @@
     </div>
   </div>
 
-  <!-- ── Footer ── -->
   <div class="footer">
     HGE AI Expense Executive Review &mdash; Jan–Apr 2026 &mdash;
     Card 3794-363482-11003 &mdash; Matthew Martelli
@@ -463,74 +405,74 @@ function toggleTheme() {
 }
 
 var vendors = [
-  { v:'HeyGen',             a:2200.73, bp:1.0, c:'Production', Jan:208.00,  Feb:746.68,  Mar:856.00,  Apr:390.05,  email:'HGE account',              flag:'Operational',         j:'AI avatar videos for confirmations & marketing. HGE account.' },
-  { v:'Anthropic (API)',    a:2026.10, bp:0.8, c:'Production', Jan:200.00,  Feb:0,        Mar:157.35,  Apr:1668.75, email:'HGE account',              flag:'Operational',         j:'API calls powering 138+ n8n workflows. 20% personal use deducted.' },
-  { v:'Genspark.AI',        a:1051.07, bp:0.5, c:'R&D',        Jan:24.99,   Feb:49.98,   Mar:236.42,  Apr:739.68,  email:'growthmindsetai@gmail.com', flag:'Transitional Account',j:'Multi-model comparison platform. 50% personal exploration deducted. Updating to HGE email.' },
-  { v:'Claude.ai',          a:1000.00, bp:1.0, c:'Production', Jan:0,        Feb:200.00,  Mar:400.00,  Apr:400.00,  email:'HGE account',              flag:'Operational',         j:'Claude.ai Pro subscriptions — AI operations hub.' },
-  { v:'Lovable',            a:1077.54, bp:1.0, c:'Production', Jan:100.00,  Feb:300.00,  Mar:350.00,  Apr:327.54,  email:'growthmindsetai@gmail.com', flag:'Transitional Account',j:'Built HGE Yelp leads dashboard (growthmindset.cloud). Updating to HGE email.' },
-  { v:'Zapier',             a:886.76,  bp:1.0, c:'Production', Jan:0,        Feb:324.75,  Mar:324.75,  Apr:237.26,  email:'HGE account',              flag:'Operational',         j:'Workflow automation — 100% HGE operations.' },
-  { v:'OpenArt AI',         a:852.28,  bp:1.0, c:'R&D',        Jan:14.00,   Feb:343.28,  Mar:330.00,  Apr:165.00,  email:'HGE account',              flag:'Operational',         j:'AI image gen evaluated vs. Midjourney & Firefly.' },
-  { v:'OpenAI ChatGPT',     a:919.78,  bp:1.0, c:'Production', Jan:150.00,  Feb:260.00,  Mar:260.00,  Apr:249.78,  email:'HGE account',              flag:'Operational',         j:'ChatGPT Plus subscriptions powering n8n workflows.' },
-  { v:'Higgsfield',         a:857.64,  bp:1.0, c:'R&D',        Jan:164.84,  Feb:352.80,  Mar:0,        Apr:340.00,  email:'HGE account',              flag:'Operational',         j:'Video AI platform evaluated for marketing content generation.' },
-  { v:'ElevenLabs',         a:594.00,  bp:1.0, c:'R&D',        Jan:0,        Feb:198.00,  Mar:297.00,  Apr:99.00,   email:'growthmindsetai@gmail.com', flag:'Transitional Account',j:'Voice AI — part of 30-model evaluation. Updating to HGE email.' },
-  { v:'Uber Eats',          a:581.71,  bp:0.0, c:'Reclassify', Jan:0,        Feb:26.13,   Mar:365.50,  Apr:190.08,  email:'HGE account',              flag:'Reclassify',          j:'Meals & transport — reclassify to meals/entertainment.' },
-  { v:'Perplexity',         a:448.60,  bp:1.0, c:'Production', Jan:40.00,   Feb:40.00,   Mar:90.00,   Apr:278.60,  email:'growthmindsetai@gmail.com', flag:'Transitional Account',j:'AI research for competitive analysis & content development. Updating to HGE email.' },
-  { v:'Retell AI',          a:498.62,  bp:1.0, c:'Production', Jan:107.05,  Feb:104.66,  Mar:123.00,  Apr:163.91,  email:'HGE account',              flag:'Operational',         j:'Voice AI infrastructure for production phone agents.' },
-  { v:'Hostinger',          a:296.60,  bp:1.0, c:'Production', Jan:0,        Feb:0,        Mar:222.94,  Apr:73.66,   email:'HGE account',              flag:'Operational',         j:'Web hosting for business domains.' },
-  { v:'Adobe',              a:339.93,  bp:1.0, c:'Production', Jan:59.99,   Feb:89.98,   Mar:89.98,   Apr:99.98,   email:'HGE account',              flag:'Operational',         j:'Photoshop + Firefly AI for creative assets.' },
-  { v:'Airtable',           a:325.29,  bp:1.0, c:'Production', Jan:109.29,  Feb:72.00,   Mar:72.00,   Apr:72.00,   email:'HGE account',              flag:'Operational',         j:'Database & operations management.' },
-  { v:'Comfy.org',          a:200.00,  bp:1.0, c:'R&D',        Jan:0,        Feb:0,        Mar:100.00,  Apr:100.00,  email:'HGE account',              flag:'Operational',         j:'Local AI image pipeline evaluation (ComfyUI).' },
-  { v:'Midjourney',         a:240.00,  bp:1.0, c:'R&D',        Jan:60.00,   Feb:60.00,   Mar:60.00,   Apr:60.00,   email:'HGE account',              flag:'Operational',         j:'Premium image gen evaluated for quality.' },
-  { v:'Hotel (Marriott)',   a:176.28,  bp:0.0, c:'Reclassify', Jan:0,        Feb:176.28,  Mar:0,        Apr:0,        email:'HGE account',              flag:'Reclassify',          j:'Hotel — reclassify to travel/lodging.' },
-  { v:'Blotato',            a:145.00,  bp:0.0, c:'Personal',   Jan:0,        Feb:0,        Mar:58.00,   Apr:87.00,   email:'mattmartelli@mac.com',     flag:'Excluded',            j:"Growth Mindset AI (Matt's own business) — not HGE." },
-  { v:'n8n Cloud',          a:144.00,  bp:1.0, c:'Production', Jan:0,        Feb:144.00,  Mar:0,        Apr:0,        email:'HGE account',              flag:'Operational',         j:'n8n Cloud — workflow automation (138+ workflows).' },
-  { v:'Wispr',              a:144.00,  bp:1.0, c:'Production', Jan:144.00,  Feb:0,        Mar:0,        Apr:0,        email:'HGE account',              flag:'Operational',         j:'Voice-to-text AI for HGE workflow operations.' },
-  { v:'Google Workspace',   a:151.47,  bp:1.0, c:'Production', Jan:10.83,   Feb:16.80,   Mar:123.84,  Apr:0,        email:'growthmindsetai@gmail.com', flag:'Transitional Account',j:'Google Workspace for business email & collaboration. Review: HGE vs. GM domain.' },
-  { v:'Enhancor / Synthesia',a:215.00, bp:1.0, c:'R&D',        Jan:80.00,   Feb:45.00,   Mar:45.00,   Apr:45.00,   email:'HGE account',              flag:'Operational',         j:'AI video generation evaluated for training content.' },
-  { v:'Apify',              a:122.84,  bp:0.0, c:'Personal',   Jan:0,        Feb:39.00,   Mar:0,        Apr:83.84,   email:'growthmindsetai@gmail.com', flag:'Excluded',            j:"Growth Mindset AI (Matt's own business) — not HGE." },
-  { v:'Flora',              a:180.00,  bp:1.0, c:'R&D',        Jan:60.00,   Feb:60.00,   Mar:60.00,   Apr:0,        email:'HGE account',              flag:'Operational',         j:'AI design tool evaluated for marketing collateral.' },
-  { v:'D-ID Studio',        a:116.00,  bp:1.0, c:'R&D',        Jan:0,        Feb:58.00,   Mar:29.00,   Apr:29.00,   email:'HGE account',              flag:'Operational',         j:'AI avatar platform evaluated alongside HeyGen.' },
-  { v:'Genery Inc.',        a:99.95,   bp:1.0, c:'R&D',        Jan:0,        Feb:0,        Mar:0,        Apr:99.95,   email:'HGE account',              flag:'Operational',         j:'AI generation platform evaluated during model comparison.' },
-  { v:'Vyond',              a:99.00,   bp:1.0, c:'R&D',        Jan:0,        Feb:0,        Mar:99.00,   Apr:0,        email:'HGE account',              flag:'Operational',         j:'AI animation platform evaluated for explainer content.' },
-  { v:'Suno AI',            a:96.00,   bp:1.0, c:'R&D',        Jan:0,        Feb:96.00,   Mar:0,        Apr:0,        email:'HGE account',              flag:'Operational',         j:'AI music generation evaluated for content production.' },
-  { v:'7-Eleven',           a:94.81,   bp:0.0, c:'Reclassify', Jan:0,        Feb:0,        Mar:94.81,   Apr:0,        email:'HGE account',              flag:'Reclassify',          j:'Convenience store — reclassify to meals/entertainment.' },
-  { v:'Grok XAI',           a:120.00,  bp:1.0, c:'R&D',        Jan:30.00,   Feb:30.00,   Mar:30.00,   Apr:30.00,   email:'HGE account',              flag:'Operational',         j:'xAI/Grok model — adversarial testing in MoE Oracle.' },
-  { v:'Arcads.AI',          a:77.00,   bp:0.0, c:'Personal',   Jan:0,        Feb:0,        Mar:0,        Apr:77.00,   email:'mattmartelli@mac.com',     flag:'Excluded',            j:'Personal use — not HGE.' },
-  { v:'Supabase',           a:72.84,   bp:1.0, c:'R&D',        Jan:0,        Feb:34.78,   Mar:38.06,   Apr:0,        email:'HGE account',              flag:'Operational',         j:'Backend database evaluated for AI agent memory layer.' },
-  { v:'Whimsical',          a:96.00,   bp:1.0, c:'Production', Jan:24.00,   Feb:24.00,   Mar:24.00,   Apr:24.00,   email:'HGE account',              flag:'Operational',         j:'Diagramming for workflow design & documentation.' },
-  { v:'Notion',             a:72.00,   bp:1.0, c:'Production', Jan:0,        Feb:24.00,   Mar:24.00,   Apr:24.00,   email:'HGE account',              flag:'Operational',         j:'Knowledge base & project management.' },
-  { v:'Descript',           a:70.00,   bp:1.0, c:'Production', Jan:0,        Feb:35.00,   Mar:35.00,   Apr:0,        email:'HGE account',              flag:'Operational',         j:'Video editing with AI transcription for training content.' },
-  { v:'MacPaw',             a:65.40,   bp:1.0, c:'R&D',        Jan:0,        Feb:0,        Mar:65.40,   Apr:0,        email:'HGE account',              flag:'Operational',         j:'CleanMyMac evaluated for IT maintenance.' },
-  { v:'Vercel',             a:80.00,   bp:1.0, c:'Production', Jan:20.00,   Feb:20.00,   Mar:20.00,   Apr:20.00,   email:'HGE account',              flag:'Operational',         j:'Frontend hosting for lead magnets & web apps.' },
-  { v:'Uber / Transport',   a:59.22,   bp:0.0, c:'Reclassify', Jan:0,        Feb:0,        Mar:59.22,   Apr:0,        email:'HGE account',              flag:'Reclassify',          j:'Transport — reclassify to meals/entertainment.' },
-  { v:'Abacus.AI',          a:59.00,   bp:1.0, c:'R&D',        Jan:0,        Feb:19.00,   Mar:20.00,   Apr:20.00,   email:'HGE account',              flag:'Operational',         j:'AI model evaluation platform.' },
-  { v:'Kie AI',             a:50.00,   bp:1.0, c:'R&D',        Jan:0,        Feb:0,        Mar:50.00,   Apr:0,        email:'HGE account',              flag:'Operational',         j:'AI platform evaluated during model comparison period.' },
-  { v:"Domino's",           a:48.35,   bp:0.0, c:'Reclassify', Jan:0,        Feb:0,        Mar:0,        Apr:48.35,   email:'HGE account',              flag:'Reclassify',          j:'Fast food — reclassify to meals/entertainment.' },
-  { v:'TechYeti / Clickly', a:47.00,   bp:1.0, c:'R&D',        Jan:0,        Feb:0,        Mar:47.00,   Apr:0,        email:'HGE account',              flag:'Operational',         j:'Productivity tool evaluated for team adoption.' },
-  { v:'HubSpot',            a:42.85,   bp:1.0, c:'Production', Jan:0,        Feb:0,        Mar:0,        Apr:42.85,   email:'growthmindsetai@gmail.com', flag:'Transitional Account',j:'CRM for lead tracking & client management. Review: HGE vs. GM account.' },
-  { v:'Railway',            a:39.99,   bp:1.0, c:'Production', Jan:0,        Feb:0,        Mar:19.99,   Apr:20.00,   email:'HGE account',              flag:'Operational',         j:'Cloud hosting for backend services.' },
-  { v:'TechSmith',          a:39.00,   bp:1.0, c:'Production', Jan:0,        Feb:0,        Mar:0,        Apr:39.00,   email:'HGE account',              flag:'Operational',         j:'Screen capture/recording for documentation & training.' },
-  { v:'Google Ads',         a:38.94,   bp:1.0, c:'Production', Jan:0,        Feb:0,        Mar:0,        Apr:38.94,   email:'HGE account',              flag:'Operational',         j:'Paid advertising for lead generation.' },
-  { v:'ShotDeck',           a:38.85,   bp:1.0, c:'Production', Jan:0,        Feb:12.95,   Mar:12.95,   Apr:12.95,   email:'HGE account',              flag:'Operational',         j:'Cinematography reference for video production.' },
-  { v:'Chick-fil-A',        a:36.67,   bp:0.0, c:'Reclassify', Jan:0,        Feb:36.67,   Mar:0,        Apr:0,        email:'HGE account',              flag:'Reclassify',          j:'Fast food — reclassify to meals/entertainment.' },
-  { v:"McDonald's",         a:26.68,   bp:0.0, c:'Reclassify', Jan:0,        Feb:26.68,   Mar:0,        Apr:0,        email:'HGE account',              flag:'Reclassify',          j:'Fast food — reclassify to meals/entertainment.' },
-  { v:'KlingAI',            a:33.39,   bp:1.0, c:'R&D',        Jan:6.99,    Feb:8.80,    Mar:8.80,    Apr:8.80,    email:'HGE account',              flag:'Operational',         j:'Video AI evaluated for short-form content generation.' },
-  { v:'Pixa.com / Pixelcut',a:20.00,   bp:1.0, c:'Production', Jan:0,        Feb:0,        Mar:10.00,   Apr:10.00,   email:'HGE account',              flag:'Operational',         j:'Stock image assets for marketing.' },
-  { v:'Shottr',             a:12.00,   bp:1.0, c:'R&D',        Jan:0,        Feb:12.00,   Mar:0,        Apr:0,        email:'HGE account',              flag:'Operational',         j:'Screenshot tool evaluated for documentation workflows.' },
-  { v:'Pixelcut',           a:10.00,   bp:1.0, c:'Production', Jan:0,        Feb:10.00,   Mar:0,        Apr:0,        email:'HGE account',              flag:'Operational',         j:'Stock image assets for marketing.' },
-  { v:'Cal.com',            a:10.00,   bp:1.0, c:'Production', Jan:0,        Feb:0,        Mar:0,        Apr:10.00,   email:'growthmindsetai@gmail.com', flag:'Transitional Account',j:'Scheduling integrated with n8n workflows. Updating to HGE email.' },
-  { v:'GitHub',             a:8.00,    bp:1.0, c:'Production', Jan:0,        Feb:0,        Mar:4.00,    Apr:4.00,    email:'HGE account',              flag:'Operational',         j:'Code repository for automation scripts.' },
-  { v:'Google Cloud',       a:6.29,    bp:1.0, c:'Production', Jan:0.76,    Feb:0,        Mar:0,        Apr:5.53,    email:'HGE account',              flag:'Operational',         j:'Cloud infrastructure (compute, storage, APIs).' },
-  { v:'OpenAI (API)',       a:5.35,    bp:1.0, c:'Production', Jan:0,        Feb:0,        Mar:0,        Apr:5.35,    email:'HGE account',              flag:'Operational',         j:'OpenAI API usage for n8n workflow integrations.' },
-  { v:'Uber Travel',        a:153.67,  bp:0.0, c:'Reclassify', Jan:153.67,  Feb:0,        Mar:0,        Apr:0,        email:'HGE account',              flag:'Reclassify',          j:'Airport transport — reclassify to travel.' },
-  { v:'Airport Meals',      a:43.57,   bp:0.0, c:'Reclassify', Jan:43.57,   Feb:0,        Mar:0,        Apr:0,        email:'HGE account',              flag:'Reclassify',          j:'Airport meals during travel — reclassify.' },
-  { v:'Jotform',            a:39.00,   bp:0.0, c:'Reclassify', Jan:39.00,   Feb:0,        Mar:0,        Apr:0,        email:'HGE account',              flag:'Reclassify',          j:'Form tool trial — cancelled.' },
-  { v:'CrewAI',             a:25.00,   bp:1.0, c:'R&D',        Jan:25.00,   Feb:0,        Mar:0,        Apr:0,        email:'HGE account',              flag:'Operational',         j:'Multi-agent workflow framework evaluated — cancelled.' },
-  { v:'Airport WiFi',       a:23.82,   bp:0.0, c:'Reclassify', Jan:23.82,   Feb:0,        Mar:0,        Apr:0,        email:'HGE account',              flag:'Reclassify',          j:'Airport WiFi during travel — reclassify.' },
-  { v:'Runway',             a:15.00,   bp:1.0, c:'R&D',        Jan:15.00,   Feb:0,        Mar:0,        Apr:0,        email:'HGE account',              flag:'Operational',         j:'AI video generation platform evaluated.' },
-  { v:'Starbucks',          a:14.77,   bp:0.0, c:'Reclassify', Jan:14.77,   Feb:0,        Mar:0,        Apr:0,        email:'HGE account',              flag:'Reclassify',          j:'Coffee during travel — reclassify to meals.' },
-  { v:'Hume AI',            a:3.00,    bp:1.0, c:'R&D',        Jan:3.00,    Feb:0,        Mar:0,        Apr:0,        email:'HGE account',              flag:'Operational',         j:'Empathic voice AI evaluated vs. ElevenLabs.' },
-  { v:'Apify (Jan)',        a:50.01,   bp:0.0, c:'Reclassify', Jan:50.01,   Feb:0,        Mar:0,        Apr:0,        email:'HGE account',              flag:'Reclassify',          j:'Data enrichment trial — N/A class in Jan.' }
+  { v:'HeyGen',              a:2200.73, bp:1.0, c:'Production', Jan:208.00,  Feb:746.68,  Mar:856.00,  Apr:390.05,  email:'mmartelli@homegeniusexteriors.com', flag:'Operational',         j:'AI avatar videos for confirmations & marketing.' },
+  { v:'Anthropic (API)',     a:2026.10, bp:0.8, c:'Production', Jan:200.00,  Feb:0,        Mar:157.35,  Apr:1668.75, email:'mmartelli@homegeniusexteriors.com', flag:'Operational',         j:'API calls powering 138+ n8n workflows. 20% personal use deducted.' },
+  { v:'Genspark.AI',         a:1051.07, bp:0.5, c:'R&D',        Jan:24.99,   Feb:49.98,   Mar:236.42,  Apr:739.68,  email:'growthmindsetai@gmail.com',         flag:'Transitional Account',j:'Multi-model comparison platform. 50% personal exploration deducted. Updating to HGE email.' },
+  { v:'Claude.ai',           a:1000.00, bp:1.0, c:'Production', Jan:0,        Feb:200.00,  Mar:400.00,  Apr:400.00,  email:'mmartelli@homegeniusexteriors.com', flag:'Operational',         j:'Claude.ai Pro subscriptions — AI operations hub.' },
+  { v:'Lovable',             a:1077.54, bp:1.0, c:'Production', Jan:100.00,  Feb:300.00,  Mar:350.00,  Apr:327.54,  email:'growthmindsetai@gmail.com',         flag:'Transitional Account',j:'Built HGE Yelp leads dashboard (growthmindset.cloud). Updating to HGE email.' },
+  { v:'Zapier',              a:886.76,  bp:1.0, c:'Production', Jan:0,        Feb:324.75,  Mar:324.75,  Apr:237.26,  email:'mmartelli@homegeniusexteriors.com', flag:'Operational',         j:'Workflow automation — 100% HGE operations.' },
+  { v:'OpenArt AI',          a:852.28,  bp:1.0, c:'R&D',        Jan:14.00,   Feb:343.28,  Mar:330.00,  Apr:165.00,  email:'mmartelli@homegeniusexteriors.com', flag:'Operational',         j:'AI image gen evaluated vs. Midjourney & Firefly.' },
+  { v:'OpenAI ChatGPT',      a:919.78,  bp:1.0, c:'Production', Jan:150.00,  Feb:260.00,  Mar:260.00,  Apr:249.78,  email:'mmartelli@homegeniusexteriors.com', flag:'Operational',         j:'ChatGPT Plus subscriptions powering n8n workflows.' },
+  { v:'Higgsfield',          a:857.64,  bp:1.0, c:'R&D',        Jan:164.84,  Feb:352.80,  Mar:0,        Apr:340.00,  email:'mmartelli@homegeniusexteriors.com', flag:'Operational',         j:'Video AI platform evaluated for marketing content generation.' },
+  { v:'ElevenLabs',          a:594.00,  bp:1.0, c:'R&D',        Jan:0,        Feb:198.00,  Mar:297.00,  Apr:99.00,   email:'growthmindsetai@gmail.com',         flag:'Transitional Account',j:'Voice AI — part of 30-model evaluation. Updating to HGE email.' },
+  { v:'Uber Eats',           a:581.71,  bp:0.0, c:'Reclassify', Jan:0,        Feb:26.13,   Mar:365.50,  Apr:190.08,  email:'mmartelli@homegeniusexteriors.com', flag:'Reclassify',          j:'Meals & transport — reclassify to meals/entertainment.' },
+  { v:'Perplexity',          a:448.60,  bp:1.0, c:'Production', Jan:40.00,   Feb:40.00,   Mar:90.00,   Apr:278.60,  email:'growthmindsetai@gmail.com',         flag:'Transitional Account',j:'AI research for competitive analysis & content development. Updating to HGE email.' },
+  { v:'Retell AI',           a:498.62,  bp:1.0, c:'Production', Jan:107.05,  Feb:104.66,  Mar:123.00,  Apr:163.91,  email:'mmartelli@homegeniusexteriors.com', flag:'Operational',         j:'Voice AI infrastructure for production phone agents.' },
+  { v:'Hostinger',           a:296.60,  bp:1.0, c:'Production', Jan:0,        Feb:0,        Mar:222.94,  Apr:73.66,   email:'mmartelli@homegeniusexteriors.com', flag:'Operational',         j:'Web hosting for business domains.' },
+  { v:'Adobe',               a:339.93,  bp:1.0, c:'Production', Jan:59.99,   Feb:89.98,   Mar:89.98,   Apr:99.98,   email:'mmartelli@homegeniusexteriors.com', flag:'Operational',         j:'Photoshop + Firefly AI for creative assets.' },
+  { v:'Airtable',            a:325.29,  bp:1.0, c:'Production', Jan:109.29,  Feb:72.00,   Mar:72.00,   Apr:72.00,   email:'mmartelli@homegeniusexteriors.com', flag:'Operational',         j:'Database & operations management.' },
+  { v:'Comfy.org',           a:200.00,  bp:1.0, c:'R&D',        Jan:0,        Feb:0,        Mar:100.00,  Apr:100.00,  email:'mmartelli@homegeniusexteriors.com', flag:'Operational',         j:'Local AI image pipeline evaluation (ComfyUI).' },
+  { v:'Midjourney',          a:240.00,  bp:1.0, c:'R&D',        Jan:60.00,   Feb:60.00,   Mar:60.00,   Apr:60.00,   email:'mmartelli@homegeniusexteriors.com', flag:'Operational',         j:'Premium image gen evaluated for quality.' },
+  { v:'Hotel (Marriott)',    a:176.28,  bp:0.0, c:'Reclassify', Jan:0,        Feb:176.28,  Mar:0,        Apr:0,        email:'mmartelli@homegeniusexteriors.com', flag:'Reclassify',          j:'Hotel — reclassify to travel/lodging.' },
+  { v:'Blotato',             a:145.00,  bp:0.0, c:'Personal',   Jan:0,        Feb:0,        Mar:58.00,   Apr:87.00,   email:'mattmartelli@mac.com',              flag:'Excluded',            j:"Growth Mindset AI (Matt's own business) — not HGE." },
+  { v:'n8n Cloud',           a:144.00,  bp:1.0, c:'Production', Jan:0,        Feb:144.00,  Mar:0,        Apr:0,        email:'mmartelli@homegeniusexteriors.com', flag:'Operational',         j:'n8n Cloud — workflow automation (138+ workflows).' },
+  { v:'Wispr',               a:144.00,  bp:1.0, c:'Production', Jan:144.00,  Feb:0,        Mar:0,        Apr:0,        email:'mmartelli@homegeniusexteriors.com', flag:'Operational',         j:'Voice-to-text AI for HGE workflow operations.' },
+  { v:'Google Workspace',    a:151.47,  bp:1.0, c:'Production', Jan:10.83,   Feb:16.80,   Mar:123.84,  Apr:0,        email:'growthmindsetai@gmail.com',         flag:'Transitional Account',j:'Google Workspace for business email & collaboration. Review: HGE vs. GM domain.' },
+  { v:'Enhancor / Synthesia',a:215.00,  bp:1.0, c:'R&D',        Jan:80.00,   Feb:45.00,   Mar:45.00,   Apr:45.00,   email:'mmartelli@homegeniusexteriors.com', flag:'Operational',         j:'AI video generation evaluated for training content.' },
+  { v:'Apify',               a:122.84,  bp:0.0, c:'Personal',   Jan:0,        Feb:39.00,   Mar:0,        Apr:83.84,   email:'growthmindsetai@gmail.com',         flag:'Excluded',            j:"Growth Mindset AI (Matt's own business) — not HGE." },
+  { v:'Flora',               a:180.00,  bp:1.0, c:'R&D',        Jan:60.00,   Feb:60.00,   Mar:60.00,   Apr:0,        email:'mmartelli@homegeniusexteriors.com', flag:'Operational',         j:'AI design tool evaluated for marketing collateral.' },
+  { v:'D-ID Studio',         a:116.00,  bp:1.0, c:'R&D',        Jan:0,        Feb:58.00,   Mar:29.00,   Apr:29.00,   email:'mmartelli@homegeniusexteriors.com', flag:'Operational',         j:'AI avatar platform evaluated alongside HeyGen.' },
+  { v:'Genery Inc.',         a:99.95,   bp:1.0, c:'R&D',        Jan:0,        Feb:0,        Mar:0,        Apr:99.95,   email:'mmartelli@homegeniusexteriors.com', flag:'Operational',         j:'AI generation platform evaluated during model comparison.' },
+  { v:'Vyond',               a:99.00,   bp:1.0, c:'R&D',        Jan:0,        Feb:0,        Mar:99.00,   Apr:0,        email:'mmartelli@homegeniusexteriors.com', flag:'Operational',         j:'AI animation platform evaluated for explainer content.' },
+  { v:'Suno AI',             a:96.00,   bp:1.0, c:'R&D',        Jan:0,        Feb:96.00,   Mar:0,        Apr:0,        email:'mmartelli@homegeniusexteriors.com', flag:'Operational',         j:'AI music generation evaluated for content production.' },
+  { v:'7-Eleven',            a:94.81,   bp:0.0, c:'Reclassify', Jan:0,        Feb:0,        Mar:94.81,   Apr:0,        email:'mmartelli@homegeniusexteriors.com', flag:'Reclassify',          j:'Convenience store — reclassify to meals/entertainment.' },
+  { v:'Grok XAI',            a:120.00,  bp:1.0, c:'R&D',        Jan:30.00,   Feb:30.00,   Mar:30.00,   Apr:30.00,   email:'mmartelli@homegeniusexteriors.com', flag:'Operational',         j:'xAI/Grok model — adversarial testing in MoE Oracle.' },
+  { v:'Arcads.AI',           a:77.00,   bp:0.0, c:'Personal',   Jan:0,        Feb:0,        Mar:0,        Apr:77.00,   email:'mattmartelli@mac.com',              flag:'Excluded',            j:'Personal use — not HGE.' },
+  { v:'Supabase',            a:72.84,   bp:1.0, c:'R&D',        Jan:0,        Feb:34.78,   Mar:38.06,   Apr:0,        email:'mmartelli@homegeniusexteriors.com', flag:'Operational',         j:'Backend database evaluated for AI agent memory layer.' },
+  { v:'Whimsical',           a:96.00,   bp:1.0, c:'Production', Jan:24.00,   Feb:24.00,   Mar:24.00,   Apr:24.00,   email:'mmartelli@homegeniusexteriors.com', flag:'Operational',         j:'Diagramming for workflow design & documentation.' },
+  { v:'Notion',              a:72.00,   bp:1.0, c:'Production', Jan:0,        Feb:24.00,   Mar:24.00,   Apr:24.00,   email:'mmartelli@homegeniusexteriors.com', flag:'Operational',         j:'Knowledge base & project management.' },
+  { v:'Descript',            a:70.00,   bp:1.0, c:'Production', Jan:0,        Feb:35.00,   Mar:35.00,   Apr:0,        email:'mmartelli@homegeniusexteriors.com', flag:'Operational',         j:'Video editing with AI transcription for training content.' },
+  { v:'MacPaw',              a:65.40,   bp:1.0, c:'R&D',        Jan:0,        Feb:0,        Mar:65.40,   Apr:0,        email:'mmartelli@homegeniusexteriors.com', flag:'Operational',         j:'CleanMyMac evaluated for IT maintenance.' },
+  { v:'Vercel',              a:80.00,   bp:1.0, c:'Production', Jan:20.00,   Feb:20.00,   Mar:20.00,   Apr:20.00,   email:'mmartelli@homegeniusexteriors.com', flag:'Operational',         j:'Frontend hosting for lead magnets & web apps.' },
+  { v:'Uber / Transport',    a:59.22,   bp:0.0, c:'Reclassify', Jan:0,        Feb:0,        Mar:59.22,   Apr:0,        email:'mmartelli@homegeniusexteriors.com', flag:'Reclassify',          j:'Transport — reclassify to meals/entertainment.' },
+  { v:'Abacus.AI',           a:59.00,   bp:1.0, c:'R&D',        Jan:0,        Feb:19.00,   Mar:20.00,   Apr:20.00,   email:'mmartelli@homegeniusexteriors.com', flag:'Operational',         j:'AI model evaluation platform.' },
+  { v:'Kie AI',              a:50.00,   bp:1.0, c:'R&D',        Jan:0,        Feb:0,        Mar:50.00,   Apr:0,        email:'mmartelli@homegeniusexteriors.com', flag:'Operational',         j:'AI platform evaluated during model comparison period.' },
+  { v:"Domino's",            a:48.35,   bp:0.0, c:'Reclassify', Jan:0,        Feb:0,        Mar:0,        Apr:48.35,   email:'mmartelli@homegeniusexteriors.com', flag:'Reclassify',          j:'Fast food — reclassify to meals/entertainment.' },
+  { v:'TechYeti / Clickly',  a:47.00,   bp:1.0, c:'R&D',        Jan:0,        Feb:0,        Mar:47.00,   Apr:0,        email:'mmartelli@homegeniusexteriors.com', flag:'Operational',         j:'Productivity tool evaluated for team adoption.' },
+  { v:'HubSpot',             a:42.85,   bp:1.0, c:'Production', Jan:0,        Feb:0,        Mar:0,        Apr:42.85,   email:'growthmindsetai@gmail.com',         flag:'Transitional Account',j:'CRM for lead tracking & client management. Review: HGE vs. GM account.' },
+  { v:'Railway',             a:39.99,   bp:1.0, c:'Production', Jan:0,        Feb:0,        Mar:19.99,   Apr:20.00,   email:'mmartelli@homegeniusexteriors.com', flag:'Operational',         j:'Cloud hosting for backend services.' },
+  { v:'TechSmith',           a:39.00,   bp:1.0, c:'Production', Jan:0,        Feb:0,        Mar:0,        Apr:39.00,   email:'mmartelli@homegeniusexteriors.com', flag:'Operational',         j:'Screen capture/recording for documentation & training.' },
+  { v:'Google Ads',          a:38.94,   bp:1.0, c:'Production', Jan:0,        Feb:0,        Mar:0,        Apr:38.94,   email:'mmartelli@homegeniusexteriors.com', flag:'Operational',         j:'Paid advertising for lead generation.' },
+  { v:'ShotDeck',            a:38.85,   bp:1.0, c:'Production', Jan:0,        Feb:12.95,   Mar:12.95,   Apr:12.95,   email:'mmartelli@homegeniusexteriors.com', flag:'Operational',         j:'Cinematography reference for video production.' },
+  { v:'Chick-fil-A',         a:36.67,   bp:0.0, c:'Reclassify', Jan:0,        Feb:36.67,   Mar:0,        Apr:0,        email:'mmartelli@homegeniusexteriors.com', flag:'Reclassify',          j:'Fast food — reclassify to meals/entertainment.' },
+  { v:"McDonald's",          a:26.68,   bp:0.0, c:'Reclassify', Jan:0,        Feb:26.68,   Mar:0,        Apr:0,        email:'mmartelli@homegeniusexteriors.com', flag:'Reclassify',          j:'Fast food — reclassify to meals/entertainment.' },
+  { v:'KlingAI',             a:33.39,   bp:1.0, c:'R&D',        Jan:6.99,    Feb:8.80,    Mar:8.80,    Apr:8.80,    email:'mmartelli@homegeniusexteriors.com', flag:'Operational',         j:'Video AI evaluated for short-form content generation.' },
+  { v:'Pixa.com / Pixelcut', a:20.00,   bp:1.0, c:'Production', Jan:0,        Feb:0,        Mar:10.00,   Apr:10.00,   email:'mmartelli@homegeniusexteriors.com', flag:'Operational',         j:'Stock image assets for marketing.' },
+  { v:'Shottr',              a:12.00,   bp:1.0, c:'R&D',        Jan:0,        Feb:12.00,   Mar:0,        Apr:0,        email:'mmartelli@homegeniusexteriors.com', flag:'Operational',         j:'Screenshot tool evaluated for documentation workflows.' },
+  { v:'Pixelcut',            a:10.00,   bp:1.0, c:'Production', Jan:0,        Feb:10.00,   Mar:0,        Apr:0,        email:'mmartelli@homegeniusexteriors.com', flag:'Operational',         j:'Stock image assets for marketing.' },
+  { v:'Cal.com',             a:10.00,   bp:1.0, c:'Production', Jan:0,        Feb:0,        Mar:0,        Apr:10.00,   email:'growthmindsetai@gmail.com',         flag:'Transitional Account',j:'Scheduling integrated with n8n workflows. Updating to HGE email.' },
+  { v:'GitHub',              a:8.00,    bp:1.0, c:'Production', Jan:0,        Feb:0,        Mar:4.00,    Apr:4.00,    email:'mmartelli@homegeniusexteriors.com', flag:'Operational',         j:'Code repository for automation scripts.' },
+  { v:'Google Cloud',        a:6.29,    bp:1.0, c:'Production', Jan:0.76,    Feb:0,        Mar:0,        Apr:5.53,    email:'mmartelli@homegeniusexteriors.com', flag:'Operational',         j:'Cloud infrastructure (compute, storage, APIs).' },
+  { v:'OpenAI (API)',        a:5.35,    bp:1.0, c:'Production', Jan:0,        Feb:0,        Mar:0,        Apr:5.35,    email:'mmartelli@homegeniusexteriors.com', flag:'Operational',         j:'OpenAI API usage for n8n workflow integrations.' },
+  { v:'Uber Travel',         a:153.67,  bp:0.0, c:'Reclassify', Jan:153.67,  Feb:0,        Mar:0,        Apr:0,        email:'mmartelli@homegeniusexteriors.com', flag:'Reclassify',          j:'Airport transport — reclassify to travel.' },
+  { v:'Airport Meals',       a:43.57,   bp:0.0, c:'Reclassify', Jan:43.57,   Feb:0,        Mar:0,        Apr:0,        email:'mmartelli@homegeniusexteriors.com', flag:'Reclassify',          j:'Airport meals during travel — reclassify.' },
+  { v:'Jotform',             a:39.00,   bp:0.0, c:'Reclassify', Jan:39.00,   Feb:0,        Mar:0,        Apr:0,        email:'mmartelli@homegeniusexteriors.com', flag:'Reclassify',          j:'Form tool trial — cancelled.' },
+  { v:'CrewAI',              a:25.00,   bp:1.0, c:'R&D',        Jan:25.00,   Feb:0,        Mar:0,        Apr:0,        email:'mmartelli@homegeniusexteriors.com', flag:'Operational',         j:'Multi-agent workflow framework evaluated — cancelled.' },
+  { v:'Airport WiFi',        a:23.82,   bp:0.0, c:'Reclassify', Jan:23.82,   Feb:0,        Mar:0,        Apr:0,        email:'mmartelli@homegeniusexteriors.com', flag:'Reclassify',          j:'Airport WiFi during travel — reclassify.' },
+  { v:'Runway',              a:15.00,   bp:1.0, c:'R&D',        Jan:15.00,   Feb:0,        Mar:0,        Apr:0,        email:'mmartelli@homegeniusexteriors.com', flag:'Operational',         j:'AI video generation platform evaluated.' },
+  { v:'Starbucks',           a:14.77,   bp:0.0, c:'Reclassify', Jan:14.77,   Feb:0,        Mar:0,        Apr:0,        email:'mmartelli@homegeniusexteriors.com', flag:'Reclassify',          j:'Coffee during travel — reclassify to meals.' },
+  { v:'Hume AI',             a:3.00,    bp:1.0, c:'R&D',        Jan:3.00,    Feb:0,        Mar:0,        Apr:0,        email:'mmartelli@homegeniusexteriors.com', flag:'Operational',         j:'Empathic voice AI evaluated vs. ElevenLabs.' },
+  { v:'Apify (Jan)',         a:50.01,   bp:0.0, c:'Reclassify', Jan:50.01,   Feb:0,        Mar:0,        Apr:0,        email:'mmartelli@homegeniusexteriors.com', flag:'Reclassify',          j:'Data enrichment trial — N/A class in Jan.' }
 ];
 
 var top10Purpose = {
@@ -549,13 +491,10 @@ var top10Purpose = {
 var tagClass  = { 'Production':'prod', 'R&D':'rd', 'Reclassify':'reclass', 'Personal':'exclude' };
 var flagClass = { 'Operational':'flag-ok', 'Transitional Account':'flag-review', 'Reclassify':'flag-review', 'Excluded':'flag-pending', 'Pending Receipt':'flag-pending' };
 
-// ── Display formatter — shows $X.XX or blank dash for zero ──
 function fmt(n) {
   if (!n || n === 0) return '—';
   return '$' + n.toLocaleString('en-US', { minimumFractionDigits:2, maximumFractionDigits:2 });
 }
-
-// ── CSV formatter — always a plain number, never a dash or symbol ──
 function fmtCSV(str) {
   if (!str || str.trim() === '' || str.trim() === '—') return '0.00';
   var s = str.replace(/[$,%\s]/g, '').trim();
@@ -563,7 +502,6 @@ function fmtCSV(str) {
   var n = parseFloat(s);
   return isNaN(n) ? '"' + str.trim().replace(/"/g,'""') + '"' : n.toFixed(2);
 }
-
 function parseMoney(str) {
   if (!str) return 0;
   var s = str.replace(/[$,\s]/g,'').trim();
@@ -576,7 +514,6 @@ function parsePct(str) {
   var n = parseFloat(s); return isNaN(n) ? 0 : n / 100;
 }
 function fmtK(n) { return '$' + Math.round(n).toLocaleString('en-US'); }
-
 function flash(el) {
   el.classList.remove('recalc-flash');
   void el.offsetWidth;
@@ -585,83 +522,53 @@ function flash(el) {
 
 function recalcTotals() {
   var rows = document.querySelectorAll('#vendorBody tr');
-  var totJan=0, totFeb=0, totMar=0, totApr=0, totCharged=0, totOpAlloc=0;
-  var allocJan=0, allocFeb=0, allocMar=0, allocApr=0;
-
+  var totJan=0,totFeb=0,totMar=0,totApr=0,totCharged=0,totOpAlloc=0;
+  var allocJan=0,allocFeb=0,allocMar=0,allocApr=0;
   rows.forEach(function(tr) {
     var cells = tr.querySelectorAll('td');
     if (cells.length < 10) return;
-    var jan   = parseMoney(cells[2].innerText);
-    var feb   = parseMoney(cells[3].innerText);
-    var mar   = parseMoney(cells[4].innerText);
-    var apr   = parseMoney(cells[5].innerText);
-    var total = parseMoney(cells[6].innerText);
-    var opPct = parsePct(cells[7].innerText);
-    if (total === 0) total = jan + feb + mar + apr;
-    var opAlloc = total * opPct;
-
-    // Update row's Op Allocation cell
-    cells[9].textContent = opAlloc > 0
-      ? '$' + opAlloc.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,',') : '—';
-
-    totJan     += jan;   totFeb     += feb;
-    totMar     += mar;   totApr     += apr;
-    totCharged += total; totOpAlloc += opAlloc;
-    allocJan   += jan * opPct; allocFeb += feb * opPct;
-    allocMar   += mar * opPct; allocApr += apr * opPct;
+    var jan=parseMoney(cells[2].innerText), feb=parseMoney(cells[3].innerText);
+    var mar=parseMoney(cells[4].innerText), apr=parseMoney(cells[5].innerText);
+    var total=parseMoney(cells[6].innerText), opPct=parsePct(cells[7].innerText);
+    if (total===0) total=jan+feb+mar+apr;
+    var opAlloc=total*opPct;
+    cells[9].textContent = opAlloc>0 ? '$'+opAlloc.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,',') : '—';
+    totJan+=jan; totFeb+=feb; totMar+=mar; totApr+=apr;
+    totCharged+=total; totOpAlloc+=opAlloc;
+    allocJan+=jan*opPct; allocFeb+=feb*opPct; allocMar+=mar*opPct; allocApr+=apr*opPct;
   });
-
-  var tf = [
-    ['tfootJan', totJan], ['tfootFeb', totFeb],
-    ['tfootMar', totMar], ['tfootApr', totApr],
-    ['tfootTotal', totCharged], ['tfootOpAlloc', totOpAlloc]
-  ];
-  tf.forEach(function(pair) {
-    var el = document.getElementById(pair[0]);
-    if (!el) return;
-    el.textContent = pair[1] > 0
-      ? '$' + pair[1].toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}) : '—';
+  [['tfootJan',totJan],['tfootFeb',totFeb],['tfootMar',totMar],['tfootApr',totApr],
+   ['tfootTotal',totCharged],['tfootOpAlloc',totOpAlloc]].forEach(function(p) {
+    var el=document.getElementById(p[0]); if(!el) return;
+    el.textContent = p[1]>0 ? '$'+p[1].toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}) : '—';
     flash(el);
   });
-
-  var months = [
-    {tot:'sumJanTotal', alloc:'sumJanAlloc', t:totJan,  a:allocJan},
-    {tot:'sumFebTotal', alloc:'sumFebAlloc', t:totFeb,  a:allocFeb},
-    {tot:'sumMarTotal', alloc:'sumMarAlloc', t:totMar,  a:allocMar},
-    {tot:'sumAprTotal', alloc:'sumAprAlloc', t:totApr,  a:allocApr}
-  ];
-  months.forEach(function(m) {
-    var te = document.getElementById(m.tot), ae = document.getElementById(m.alloc);
-    if (te) { te.textContent = fmt(m.t) || '$0.00'; flash(te); }
-    if (ae) { ae.textContent = fmt(m.a) || '$0.00'; flash(ae); }
+  [{tot:'sumJanTotal',alloc:'sumJanAlloc',t:totJan,a:allocJan},
+   {tot:'sumFebTotal',alloc:'sumFebAlloc',t:totFeb,a:allocFeb},
+   {tot:'sumMarTotal',alloc:'sumMarAlloc',t:totMar,a:allocMar},
+   {tot:'sumAprTotal',alloc:'sumAprAlloc',t:totApr,a:allocApr}].forEach(function(m) {
+    var te=document.getElementById(m.tot), ae=document.getElementById(m.alloc);
+    if(te){te.textContent=fmt(m.t)||'$0.00'; flash(te);}
+    if(ae){ae.textContent=fmt(m.a)||'$0.00'; flash(ae);}
   });
-
-  var mt = document.getElementById('metricTotal');
-  var ma = document.getElementById('metricOpAlloc');
-  var mp = document.getElementById('metricOpPct');
-  if (mt) { mt.textContent = fmtK(totCharged); flash(mt); }
-  if (ma) { ma.textContent = fmtK(totOpAlloc); flash(ma); }
-  if (mp && totCharged > 0) mp.textContent = '~' + Math.round((totOpAlloc/totCharged)*100) + '% of total charged';
+  var mt=document.getElementById('metricTotal'), ma=document.getElementById('metricOpAlloc'), mp=document.getElementById('metricOpPct');
+  if(mt){mt.textContent=fmtK(totCharged); flash(mt);}
+  if(ma){ma.textContent=fmtK(totOpAlloc); flash(ma);}
+  if(mp&&totCharged>0) mp.textContent='~'+Math.round((totOpAlloc/totCharged)*100)+'% of total charged';
 }
 
 function buildTop10() {
-  var sorted = vendors.filter(function(v){return v.a>0;})
-    .sort(function(a,b){return (b.a*b.bp)-(a.a*a.bp);}).slice(0,10);
-  var tbody = document.getElementById('top10Body');
-  tbody.innerHTML = '';
+  var sorted=vendors.filter(function(v){return v.a>0;}).sort(function(a,b){return (b.a*b.bp)-(a.a*a.bp);}).slice(0,10);
+  var tbody=document.getElementById('top10Body'); tbody.innerHTML='';
   sorted.forEach(function(r,i) {
-    var opAlloc = (r.a*r.bp).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
-    var tc = tagClass[r.c]||'prod';
-    var purpose = top10Purpose[r.v]||r.j;
-    var tr = document.createElement('tr');
-    tr.innerHTML =
-      '<td><span class="rank">'+(i+1)+'</span></td>'+
+    var opAlloc=(r.a*r.bp).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+    var tc=tagClass[r.c]||'prod', purpose=top10Purpose[r.v]||r.j;
+    var tr=document.createElement('tr');
+    tr.innerHTML='<td><span class="rank">'+(i+1)+'</span></td>'+
       '<td style="font-weight:600;white-space:nowrap;">'+r.v+'</td>'+
       '<td><span class="tag '+tc+'">'+r.c+'</span></td>'+
-      '<td class="money">'+fmt(r.Jan)+'</td>'+
-      '<td class="money">'+fmt(r.Feb)+'</td>'+
-      '<td class="money">'+fmt(r.Mar)+'</td>'+
-      '<td class="money">'+fmt(r.Apr)+'</td>'+
+      '<td class="money">'+fmt(r.Jan)+'</td><td class="money">'+fmt(r.Feb)+'</td>'+
+      '<td class="money">'+fmt(r.Mar)+'</td><td class="money">'+fmt(r.Apr)+'</td>'+
       '<td class="money">'+fmt(r.a)+'</td>'+
       '<td class="money green" style="font-weight:600;">$'+opAlloc+'</td>'+
       '<td style="font-size:12px;color:var(--muted);max-width:320px;">'+purpose+'</td>';
@@ -670,17 +577,15 @@ function buildTop10() {
 }
 
 function buildTable(filterCat) {
-  var tbody = document.getElementById('vendorBody');
-  tbody.innerHTML = '';
-  var rows = filterCat==='all' ? vendors : vendors.filter(function(v){return v.c===filterCat;});
+  var tbody=document.getElementById('vendorBody'); tbody.innerHTML='';
+  var rows=filterCat==='all'?vendors:vendors.filter(function(v){return v.c===filterCat;});
   rows.forEach(function(r) {
-    var opPct  = r.bp===1?'100%':r.bp===0?'0%':Math.round(r.bp*100)+'%';
-    var nonPct = r.bp===1?'0%':r.bp===0?'100%':Math.round((1-r.bp)*100)+'%';
-    var opAlloc= (r.a*r.bp).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
-    var tc = tagClass[r.c]||'prod', fc = flagClass[r.flag]||'flag-ok';
-    var tr = document.createElement('tr');
-    tr.setAttribute('data-cat',r.c);
-    tr.innerHTML =
+    var opPct=r.bp===1?'100%':r.bp===0?'0%':Math.round(r.bp*100)+'%';
+    var nonPct=r.bp===1?'0%':r.bp===0?'100%':Math.round((1-r.bp)*100)+'%';
+    var opAlloc=(r.a*r.bp).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+    var tc=tagClass[r.c]||'prod', fc=flagClass[r.flag]||'flag-ok';
+    var tr=document.createElement('tr'); tr.setAttribute('data-cat',r.c);
+    tr.innerHTML=
       '<td style="font-weight:500;white-space:nowrap;">'+r.v+'</td>'+
       '<td contenteditable="true"><span class="tag '+tc+'">'+r.c+'</span></td>'+
       '<td class="money" contenteditable="true">'+fmt(r.Jan)+'</td>'+
@@ -699,7 +604,7 @@ function buildTable(filterCat) {
     tbody.appendChild(tr);
   });
   tbody.querySelectorAll('td[contenteditable="true"]').forEach(function(td){
-    td.addEventListener('blur', function(){ recalcTotals(); });
+    td.addEventListener('blur',function(){recalcTotals();});
   });
 }
 
@@ -710,55 +615,35 @@ function filterVendors(cat,btn) {
   recalcTotals();
 }
 
-// ── Export CSV — clean numbers, no special chars, ready for Excel pivot ──
 function exportCSV() {
-  var headers = [
-    'Vendor','Category','Jan','Feb','Mar','Apr',
-    'Total Charged','Operational %','Non-HGE %','Operational Allocation',
-    'Account / Email','Review Flag','Notes',
-    'Verified HGE Email','Active Subscription'
-  ];
-
-  // Money columns (0-indexed in TD array): 2,3,4,5,6,9
-  // Percent columns: 7,8
-  // Text columns: 0,1,10,11,12
-  // Checkbox columns: 13,14
-  var moneyCols   = {2:true,3:true,4:true,5:true,6:true,9:true};
-  var pctCols     = {7:true,8:true};
-  var checkCols   = {13:true,14:true};
-
-  var rows = document.querySelectorAll('#vendorBody tr');
-  var csvLines = [headers.map(function(h){return '"'+h+'"';}).join(',')];
-
+  var headers=['Vendor','Category','Jan','Feb','Mar','Apr','Total Charged','Operational %','Non-HGE %','Operational Allocation','Account Emails','Review Flag','Notes','Verified HGE Email','Active Subscription'];
+  var moneyCols={2:true,3:true,4:true,5:true,6:true,9:true};
+  var pctCols={7:true,8:true};
+  var checkCols={13:true,14:true};
+  var rows=document.querySelectorAll('#vendorBody tr');
+  var csvLines=[headers.map(function(h){return '"'+h+'"';}).join(',')];
   rows.forEach(function(tr) {
-    var cells = tr.querySelectorAll('td');
-    var vals  = [];
-    cells.forEach(function(td, i) {
-      if (checkCols[i]) {
-        var cb = td.querySelector('input[type="checkbox"]');
-        vals.push(cb ? (cb.checked ? 'TRUE' : 'FALSE') : 'FALSE');
-      } else if (moneyCols[i]) {
-        // Strip $, commas — output plain number
-        var raw = td.innerText.trim();
-        vals.push(fmtCSV(raw));
-      } else if (pctCols[i]) {
-        // Strip % — output decimal as number e.g. 80 for 80%
-        var raw2 = td.innerText.trim().replace(/%/g,'').trim();
-        var n = parseFloat(raw2);
-        vals.push(isNaN(n) ? '0' : n.toString());
+    var cells=tr.querySelectorAll('td'), vals=[];
+    cells.forEach(function(td,i) {
+      if(checkCols[i]) {
+        var cb=td.querySelector('input[type="checkbox"]');
+        vals.push(cb?(cb.checked?'TRUE':'FALSE'):'FALSE');
+      } else if(moneyCols[i]) {
+        vals.push(fmtCSV(td.innerText.trim()));
+      } else if(pctCols[i]) {
+        var n=parseFloat(td.innerText.trim().replace(/%/g,'').trim());
+        vals.push(isNaN(n)?'0':n.toString());
       } else {
-        // Text field — quote it, escape any internal quotes
-        var txt = td.innerText.trim().replace(/\n/g,' ').replace(/"/g,'""');
+        var txt=td.innerText.trim().replace(/\n/g,' ').replace(/"/g,'""');
         vals.push('"'+txt+'"');
       }
     });
     csvLines.push(vals.join(','));
   });
-
-  var blob = new Blob(['﻿'+csvLines.join('\r\n')], {type:'text/csv;charset=utf-8;'});
-  var url  = URL.createObjectURL(blob);
-  var a    = document.createElement('a');
-  a.href = url; a.download = 'HGE_Expense_Executive_Review.csv'; a.click();
+  var blob=new Blob(['﻿'+csvLines.join('\r\n')],{type:'text/csv;charset=utf-8;'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');
+  a.href=url; a.download='HGE_Expense_Executive_Review.csv'; a.click();
   URL.revokeObjectURL(url);
 }
 
